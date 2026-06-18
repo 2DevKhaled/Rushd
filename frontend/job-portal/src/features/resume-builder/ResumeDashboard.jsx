@@ -1,0 +1,211 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FileText, Loader2, Plus, Trash2, Upload } from "lucide-react";
+import toast from "react-hot-toast";
+import pdfToText from "react-pdftotext";
+import axiosInstance from "../../pages/utils/axiosInstance";
+import { API_PATHS } from "../../pages/utils/apiPaths";
+import LuxuryDashboardLayout from "../../components/dashboard/LuxuryDashboardLayout";
+import { EmptyState, LoadingPanel, StatCard } from "../../components/dashboard/DashboardWidgets";
+import { Card } from "../../components/ui/card";
+import { Input } from "../../components/ui/input";
+
+const getErrorMessage = (error, fallback) =>
+  error?.response?.data?.message || error?.message || fallback;
+
+function ResumeDashboard() {
+  const navigate = useNavigate();
+  const [resumes, setResumes] = useState([]);
+  const [title, setTitle] = useState("سيرة ذاتية جديدة");
+  const [resumeFile, setResumeFile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [creating, setCreating] = useState(false);
+  const [importing, setImporting] = useState(false);
+
+  const fetchResumes = async () => {
+    try {
+      setLoading(true);
+      const response = await axiosInstance.get(API_PATHS.RESUMES.GET_MY);
+      setResumes(response.data?.resumes || []);
+    } catch (error) {
+      toast.error(getErrorMessage(error, "تعذر تحميل السير الذاتية"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const createResume = async (event) => {
+    event.preventDefault();
+
+    try {
+      setCreating(true);
+      const response = await axiosInstance.post(API_PATHS.RESUMES.CREATE, {
+        title: title.trim() || "سيرة ذاتية جديدة",
+      });
+      toast.success("تم إنشاء السيرة الذاتية");
+      navigate(`/resume-builder/${response.data.resume._id}`);
+    } catch (error) {
+      toast.error(getErrorMessage(error, "تعذر إنشاء السيرة الذاتية"));
+    } finally {
+      setCreating(false);
+    }
+  };
+
+  const importResume = async (event) => {
+    event.preventDefault();
+
+    if (!resumeFile) {
+      toast.error("اختر ملف PDF أولاً");
+      return;
+    }
+
+    try {
+      setImporting(true);
+      const resumeText = await pdfToText(resumeFile);
+      const response = await axiosInstance.post(API_PATHS.RESUME_AI.UPLOAD_RESUME, {
+        title: title.trim() || resumeFile.name.replace(/\.pdf$/i, ""),
+        resumeText,
+      });
+
+      toast.success(response.data?.fallback ? "تم إنشاء سيرة قابلة للتعديل" : "تم استيراد السيرة الذاتية");
+      navigate(`/resume-builder/${response.data.resume._id}`);
+    } catch (error) {
+      toast.error(getErrorMessage(error, "تعذر استيراد ملف السيرة"));
+    } finally {
+      setImporting(false);
+    }
+  };
+
+  const deleteResume = async (resumeId) => {
+    const confirmed = window.confirm("هل تريد حذف هذه السيرة الذاتية؟");
+    if (!confirmed) return;
+
+    try {
+      await axiosInstance.delete(API_PATHS.RESUMES.DELETE(resumeId));
+      setResumes((current) => current.filter((resume) => resume._id !== resumeId));
+      toast.success("تم حذف السيرة الذاتية");
+    } catch (error) {
+      toast.error(getErrorMessage(error, "تعذر حذف السيرة الذاتية"));
+    }
+  };
+
+  useEffect(() => {
+    fetchResumes();
+  }, []);
+
+  return (
+    <LuxuryDashboardLayout
+      eyebrow="RESUME BUILDER"
+      title="ابنِ سيرة ذاتية جاهزة للتقديم"
+      description="أنشئ نسخة منظمة، عدّل الأقسام، غيّر القالب واللون، وشارك رابط معاينة عام عند الحاجة."
+    >
+        <section className="mb-6 grid gap-4 md:grid-cols-3">
+          <StatCard icon={FileText} label="السير الذاتية" value={loading ? "..." : resumes.length} hint="محفوظة في حسابك" />
+          <StatCard icon={Upload} label="استيراد PDF" value="متاح" hint="تحويل إلى سيرة قابلة للتعديل" tone="blue" />
+          <StatCard icon={Plus} label="إنشاء جديد" value="فوري" hint="ابدأ من قالب منظم" tone="green" />
+        </section>
+
+        <section className="mb-8 grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
+          <div className="space-y-4">
+            <Card className="p-5">
+            <form onSubmit={createResume}>
+              <label className="mb-2 block text-sm font-bold text-[var(--rushd-muted)]">اسم السيرة</label>
+              <Input
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+                className="mb-4"
+              />
+              <button
+                type="submit"
+                disabled={creating}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[linear-gradient(145deg,var(--rushd-accent-2),var(--rushd-accent))] px-5 py-3 font-black text-[var(--rushd-ink)] disabled:opacity-60"
+              >
+                {creating ? <Loader2 className="h-5 w-5 animate-spin" /> : <Plus className="h-5 w-5" />}
+                إنشاء سيرة جديدة
+              </button>
+            </form>
+            </Card>
+
+            <Card className="p-5">
+            <form onSubmit={importResume}>
+              <label className="mb-2 block text-sm font-bold text-[var(--rushd-muted)]">استيراد PDF اختياري</label>
+              <input
+                type="file"
+                accept="application/pdf"
+                onChange={(event) => setResumeFile(event.target.files?.[0] || null)}
+                className="mb-4 w-full rounded-xl border border-dashed border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-sm text-[var(--rushd-muted)] file:ml-4 file:rounded-xl file:border-0 file:bg-[var(--rushd-card)] file:px-3 file:py-2 file:text-[var(--rushd-text)]"
+              />
+              <button
+                type="submit"
+                disabled={importing}
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--rushd-border-strong)] px-5 py-3 font-black text-[var(--rushd-accent)] disabled:opacity-60"
+              >
+                {importing ? <Loader2 className="h-5 w-5 animate-spin" /> : <Upload className="h-5 w-5" />}
+                استيراد وبناء السيرة
+              </button>
+            </form>
+            </Card>
+          </div>
+
+          <Card className="p-8">
+            <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[var(--rushd-accent)]">
+              CAREER DOSSIER
+            </p>
+            <h2 className="text-3xl font-black md:text-5xl">وثيقة مهنية مصقولة، قابلة للتعديل والمشاركة.</h2>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--rushd-muted)]">
+              استخدم بياناتك الحقيقية، افتح المحرر، ثم شارك نسخة عامة عند الحاجة من دون تغيير أي مسار في النظام.
+            </p>
+          </Card>
+        </section>
+
+        <section className="rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5">
+          <div className="mb-5 flex items-center justify-between">
+            <h2 className="text-2xl font-black">سيرك الذاتية</h2>
+            <span className="rounded-full border border-[var(--rushd-badge-border)] bg-[var(--rushd-badge-bg)] px-3.5 py-1.5 text-sm font-black text-[var(--rushd-badge-text)]">
+              {resumes.length} سيرة
+            </span>
+          </div>
+
+          {loading ? (
+            <LoadingPanel rows={4} />
+          ) : resumes.length === 0 ? (
+            <EmptyState icon={FileText} title="لا توجد سير ذاتية بعد" description="ابدأ بسيرة جديدة أو استورد ملف PDF." />
+          ) : (
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {resumes.map((resume) => (
+                <article
+                  key={resume._id}
+                  className="group rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-card)] p-5 transition hover:border-[var(--rushd-border-strong)]"
+                >
+                  <div className="mb-5 flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-xl font-black">{resume.title}</h3>
+                      <p className="mt-1 text-sm text-[var(--rushd-muted)]">
+                        {resume.public ? "رابط عام مفعل" : "خاص"}
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => deleteResume(resume._id)}
+                      className="rounded-xl p-2 text-[var(--rushd-muted)] transition hover:bg-red-500/10 hover:text-red-300"
+                    >
+                      <Trash2 className="h-5 w-5" />
+                    </button>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => navigate(`/resume-builder/${resume._id}`)}
+                      className="w-full rounded-xl bg-[var(--rushd-accent-2)] px-4 py-3 font-black text-[var(--rushd-ink)] transition group-hover:bg-[var(--rushd-accent-2)]"
+                  >
+                    فتح وتعديل
+                  </button>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+    </LuxuryDashboardLayout>
+  );
+}
+
+export default ResumeDashboard;

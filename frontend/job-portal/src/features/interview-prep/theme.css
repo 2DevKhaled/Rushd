@@ -1,0 +1,13 @@
+@theme dark {
+  --color-bg: var(--rushd-bg);
+  --color-surface: var(--rushd-surface);
+  --color-surface-light: var(--rushd-surface-strong);
+  --color-border: var(--rushd-border);
+  --color-text: var(--rushd-text);
+  --color-text-muted: var(--rushd-muted);
+  --color-primary: var(--rushd-accent);
+  --color-primary-hover: var(--rushd-accent-2);
+  --color-success: var(--rushd-accent);
+  --color-danger: #fca5a5;
+  --color-warning: var(--rushd-accent-2);
+}
