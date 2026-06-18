@@ -140,6 +140,16 @@ const sendMail = async ({ to, subject, text, html }) => {
   });
 };
 
+const logSettledEmailResults = (results, context) => {
+  const failed = results.filter((result) => result.status === "rejected");
+  if (failed.length > 0) {
+    console.error(
+      `[email] ${context}: ${failed.length}/${results.length} messages failed.`,
+      failed.map((result) => result.reason?.message || String(result.reason)).join(" | "),
+    );
+  }
+};
+
 const sendNewJobNotificationToJobseekers = async (job) => {
   try {
     if (!isEmailEnabled()) {
@@ -174,7 +184,7 @@ const sendNewJobNotificationToJobseekers = async (job) => {
       `,
     });
 
-    await Promise.allSettled(
+    const results = await Promise.allSettled(
       recipients.map((user) =>
         sendMail({
           to: user.email,
@@ -184,8 +194,52 @@ const sendNewJobNotificationToJobseekers = async (job) => {
         }),
       ),
     );
+    logSettledEmailResults(results, "New job notifications");
   } catch (error) {
     console.error("[email] Failed to send new job notifications:", error.message);
+  }
+};
+
+const sendNewApplicationEmailToEmployer = async ({ job, applicant }) => {
+  try {
+    if (!isEmailEnabled()) {
+      console.warn("[email] New application notification skipped because email provider config is missing.");
+      return;
+    }
+
+    const employer = job?.company;
+    if (!employer?.email || !job?.title || !applicant?.name) return;
+
+    const jobUrl = `${getAppUrl()}/applicants?jobId=${job._id}`;
+    const safeApplicantName = escapeHtml(applicant.name);
+    const safeApplicantEmail = escapeHtml(applicant.email || "لا يوجد بريد");
+    const safeJobTitle = escapeHtml(job.title);
+
+    const html = buildEmailLayout({
+      title: "متقدم جديد على وظيفة",
+      preview: `${applicant.name} تقدم على ${job.title}`,
+      actionLabel: "عرض المتقدمين",
+      actionUrl: jobUrl,
+      body: `
+        <p style="margin:0 0 16px;">مرحبًا،</p>
+        <p style="margin:0 0 16px;">وصل طلب تقديم جديد على إحدى وظائفك:</p>
+        <div style="margin:22px 0;padding:18px;border:1px solid rgba(155,107,36,.2);border-radius:18px;background:rgba(155,107,36,.06);">
+          <div style="font-size:20px;font-weight:900;color:#1c1710;">${safeJobTitle}</div>
+          <div style="margin-top:12px;color:#5b3910;font-weight:900;">${safeApplicantName}</div>
+          <div style="margin-top:6px;color:rgba(28,23,16,.72);">${safeApplicantEmail}</div>
+        </div>
+        <p style="margin:0;">افتح صفحة المتقدمين لمراجعة الطلب والسيرة الذاتية.</p>
+      `,
+    });
+
+    await sendMail({
+      to: employer.email,
+      subject: `متقدم جديد: ${job.title}`,
+      text: `${applicant.name} تقدم على وظيفة ${job.title}. الرابط: ${jobUrl}`,
+      html,
+    });
+  } catch (error) {
+    console.error("[email] Failed to send new application notification:", error.message);
   }
 };
 
@@ -246,5 +300,6 @@ const sendApplicationStatusEmail = async (application) => {
 
 module.exports = {
   sendApplicationStatusEmail,
+  sendNewApplicationEmailToEmployer,
   sendNewJobNotificationToJobseekers,
 };

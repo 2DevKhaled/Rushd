@@ -1,7 +1,10 @@
 const Application = require("../models/Application");
 const Job = require("../models/Job");
 const Resume = require("../models/Resume");
-const { sendApplicationStatusEmail } = require("../utils/emailService");
+const {
+  sendApplicationStatusEmail,
+  sendNewApplicationEmailToEmployer,
+} = require("../utils/emailService");
 const { createNotification } = require("../utils/notificationService");
 // @Desc Apply to a job
 exports.applyToJob = async (req, res) => {
@@ -47,15 +50,20 @@ exports.applyToJob = async (req, res) => {
     res.status(201).json(application);
     Job.findById(req.params.jobId)
       .select("title company")
+      .populate("company", "name companyName email")
       .then((job) => {
         if (!job) return null;
-        return createNotification({
+        createNotification({
           user: job.company,
           type: "new_application",
           title: "متقدم جديد",
           message: `${req.user.name} تقدم على وظيفة ${job.title}`,
           link: `/applicants?jobId=${job._id}`,
           metadata: { jobId: job._id, applicationId: application._id },
+        });
+        return sendNewApplicationEmailToEmployer({
+          job,
+          applicant: req.user,
         });
       })
       .catch((error) => {
