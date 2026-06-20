@@ -50,12 +50,10 @@ function Dashboard() {
   return (
     <DashoardLayout>
       <main dir="rtl" className="container mx-auto px-4 pb-24 pt-8 md:px-0">
-        <section className="mb-8 overflow-hidden rounded-3xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-6 shadow-2xl backdrop-blur md:p-8">
+        <section className="mb-8 overflow-hidden border border-[var(--rushd-border)] border-r-4 border-r-[var(--rushd-accent)] bg-[var(--rushd-surface)] p-6 shadow-[0_18px_55px_var(--rushd-shadow)] md:p-8">
           <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
             <div>
-              <p className="font-mono text-sm font-bold text-[var(--rushd-accent)]">
-                INTERVIEW_PREP
-              </p>
+              <p className="text-sm font-bold text-[var(--rushd-accent)]">مساحة التدريب الذكي</p>
               <h1 className="mt-3 text-3xl font-black text-[var(--rushd-text)] md:text-5xl">
                 تدريب المقابلات داخل رُشد
               </h1>
@@ -64,7 +62,8 @@ function Dashboard() {
                 القادمة بثقة ووضوح.
               </p>
             </div>
-            <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-border)] text-center md:w-64">
+            <div className="flex flex-col gap-3 sm:flex-row md:items-end">
+            <div className="grid grid-cols-2 gap-px overflow-hidden border border-[var(--rushd-border)] bg-[var(--rushd-border)] text-center md:w-64">
               <div className="bg-[var(--rushd-surface-strong)] p-4">
                 <div className="text-3xl font-black text-[var(--rushd-text)]">
                   {sessions.length}
@@ -80,11 +79,13 @@ function Dashboard() {
                 </div>
               </div>
             </div>
+            <button className="flex min-h-14 items-center justify-center gap-2 bg-[var(--rushd-accent)] px-6 text-sm font-bold text-[var(--rushd-ink)] transition hover:bg-[var(--rushd-accent-2)]" onClick={() => setOpenCreateModal(true)}><Plus className="h-5 w-5" />جلسة جديدة</button>
+            </div>
           </div>
         </section>
 
         {sessions?.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 pb-6 md:grid-cols-2 md:gap-6 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 pb-6 md:grid-cols-2 lg:grid-cols-3">
             {sessions?.map((data) => (
               <SummaryCard
                 key={data?._id}
@@ -103,10 +104,8 @@ function Dashboard() {
             ))}
           </div>
         ) : (
-          <div className="rounded-3xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-10 text-center shadow-2xl">
-            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-[linear-gradient(145deg,var(--rushd-accent-2),var(--rushd-accent))] text-3xl font-black text-[var(--rushd-ink)]">
-              ر
-            </div>
+          <div className="border border-dashed border-[var(--rushd-border-strong)] bg-[var(--rushd-surface)] p-10 text-center">
+            <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center bg-[var(--rushd-card)] text-[var(--rushd-accent)]"><Plus className="h-7 w-7" /></div>
             <h2 className="text-2xl font-black text-[var(--rushd-text)]">
               لا توجد جلسات تدريب بعد
             </h2>
@@ -117,13 +116,6 @@ function Dashboard() {
           </div>
         )}
 
-        <button
-          className="fixed bottom-8 left-6 flex h-14 items-center justify-center gap-2 rounded-2xl bg-[linear-gradient(145deg,var(--rushd-accent-2),var(--rushd-accent))] px-6 text-sm font-black text-[var(--rushd-ink)] shadow-[0_22px_80px_var(--rushd-glow)] transition hover:-translate-y-1 md:left-12"
-          onClick={() => setOpenCreateModal(true)}
-        >
-          <Plus className="h-6 w-6" />
-          جلسة جديدة
-        </button>
       </main>
 
       <Modal

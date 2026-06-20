@@ -160,19 +160,16 @@ function LuxuryDashboardLayout({
   }, [fetchNotifications, user]);
 
   return (
-    <div dir="rtl" className="min-h-screen overflow-hidden bg-[var(--rushd-bg)] text-[var(--rushd-text)]">
-      <div className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top_right,var(--rushd-glow),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.06),transparent_22%),linear-gradient(180deg,var(--rushd-bg),var(--rushd-bg-2)_62%,var(--rushd-bg))]" />
-      <div className="landing-grid pointer-events-none fixed inset-0 opacity-[0.12] [background-image:linear-gradient(var(--rushd-glow)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.12)_1px,transparent_1px)] [background-size:88px_88px]" />
-
+    <div dir="rtl" className={cn("min-h-screen w-full max-w-[100vw] overflow-x-clip bg-[var(--rushd-bg)] text-[var(--rushd-text)]", role === "employer" ? "employer-shell" : "seeker-shell")}>
       <aside
         className={cn(
-          "fixed inset-y-0 right-0 z-40 flex w-72 translate-x-full flex-col border-l border-[var(--rushd-border)] bg-[var(--rushd-surface)] shadow-2xl backdrop-blur-2xl transition lg:translate-x-0",
-          open && "translate-x-0",
+          "fixed inset-y-0 right-0 z-40 hidden w-72 flex-col border-l border-[var(--rushd-border)] bg-[var(--rushd-surface)] shadow-2xl backdrop-blur-2xl lg:flex",
+          open && "flex",
         )}
       >
         <div className="flex h-20 items-center justify-between border-b border-[var(--rushd-border)] px-5">
           <Link to={role === "employer" ? "/employer-dashboard" : "/dashboard"} className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--rushd-border-strong)] bg-[linear-gradient(145deg,var(--rushd-accent-2),#9b6b24)] text-2xl font-black text-[var(--rushd-ink)] shadow-lg shadow-[var(--rushd-glow)]">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--rushd-border-strong)] bg-[var(--rushd-accent)] text-2xl font-black text-[var(--rushd-ink)]">
               ر
             </div>
             <div className="leading-none">
@@ -230,9 +227,9 @@ function LuxuryDashboardLayout({
 
       {open && <button type="button" className="fixed inset-0 z-30 bg-[var(--rushd-bg)]/60 lg:hidden" onClick={() => setOpen(false)} aria-label="إغلاق القائمة" />}
 
-      <div className="relative z-10 lg:mr-72">
+      <div className="relative z-10 min-w-0 max-w-full lg:mr-72">
         <header className="sticky top-0 z-20 border-b border-[var(--rushd-border)] bg-[var(--rushd-header)] backdrop-blur-2xl">
-          <div className="flex min-h-20 items-center gap-3 px-4 sm:px-6 lg:px-8">
+          <div className="flex min-h-20 min-w-0 max-w-full items-center gap-3 px-4 sm:px-6 lg:px-8">
             <button type="button" onClick={() => setOpen(true)} className="rounded-xl border border-[var(--rushd-border)] p-2.5 text-[var(--rushd-muted)] hover:bg-[var(--rushd-card)] lg:hidden" aria-label="فتح القائمة">
               <Menu className="h-5 w-5" />
             </button>
@@ -355,8 +352,8 @@ function LuxuryDashboardLayout({
           </div>
         </header>
 
-        <main className={cn("mx-auto px-4 py-6 sm:px-6 lg:px-8", maxWidth)}>
-          <section className="mb-6 rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-2xl backdrop-blur-xl sm:p-6">
+        <main className={cn("mx-auto w-full min-w-0 max-w-full px-4 py-6 sm:px-6 lg:px-8", maxWidth)}>
+          <section className={cn("mb-6 rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-2xl backdrop-blur-xl sm:p-6", role === "employer" ? "employer-page-header" : "seeker-page-header")}>
             <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <div className="mb-3 flex flex-wrap items-center gap-2 text-xs font-black text-[var(--rushd-muted)]">

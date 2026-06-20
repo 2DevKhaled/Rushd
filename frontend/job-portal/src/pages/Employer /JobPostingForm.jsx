@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Save } from "lucide-react";
+import { Banknote, BriefcaseBusiness, FileText, Save } from "lucide-react";
 import toast from "react-hot-toast";
 import axiosInstance from "../utils/axiosInstance";
 import { API_PATHS } from "../utils/apiPaths";
@@ -86,29 +86,31 @@ function JobPostingForm() {
   return (
     <LuxuryDashboardLayout
       role="employer"
-      eyebrow={editId ? "EDIT JOB" : "POST JOB"}
+      eyebrow={editId ? "تعديل الإعلان" : "إعلان جديد"}
       title={editId ? "تعديل وظيفة" : "نشر وظيفة جديدة"}
       description="صمم إعلان وظيفة واضحاً، منظماً، وجاهزاً للعرض على الباحثين عن عمل."
     >
-        <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_420px]">
-          <Card className="p-6">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_400px]">
+          <Card className="rounded-none p-5 sm:p-7">
           <form onSubmit={submitJob}>
+            <div className="mb-5 flex items-center gap-3 border-b border-[var(--rushd-border)] pb-4"><BriefcaseBusiness className="h-5 w-5 text-[var(--rushd-accent)]" /><div><h2 className="font-bold">المعلومات الأساسية</h2><p className="text-sm text-[var(--rushd-muted)]">عرّف المرشح بالفرصة ومكانها.</p></div></div>
             <div className="grid gap-4 md:grid-cols-2">
               <Input label="المسمى الوظيفي" value={job.title} onChange={(value) => updateJob("title", value)} required />
               <Input label="الموقع" value={job.location} onChange={(value) => updateJob("location", value)} />
               <Input label="التخصص" value={job.category} onChange={(value) => updateJob("category", value)} />
               <label className="block">
                 <span className="mb-2 block text-sm font-bold text-[var(--rushd-muted)]">نوع الدوام</span>
-                <Select value={job.type} onChange={(event) => updateJob("type", event.target.value)}>
+                <Select className="rounded-none" value={job.type} onChange={(event) => updateJob("type", event.target.value)}>
                   {["Remote", "Full-Time", "Part-Time", "Internship", "Contract"].map((type) => <option key={type}>{type}</option>)}
                 </Select>
               </label>
-              <Input label="أقل راتب" type="number" value={job.salaryMin} onChange={(value) => updateJob("salaryMin", value)} />
-              <Input label="أعلى راتب" type="number" value={job.salaryMax} onChange={(value) => updateJob("salaryMax", value)} />
             </div>
+            <div className="mb-5 mt-8 flex items-center gap-3 border-b border-[var(--rushd-border)] pb-4"><Banknote className="h-5 w-5 text-[var(--rushd-accent)]" /><div><h2 className="font-bold">نطاق الراتب</h2><p className="text-sm text-[var(--rushd-muted)]">اختياري، ويمكن تركه فارغًا.</p></div></div>
+            <div className="grid gap-4 md:grid-cols-2"><Input label="أقل راتب" type="number" value={job.salaryMin} onChange={(value) => updateJob("salaryMin", value)} /><Input label="أعلى راتب" type="number" value={job.salaryMax} onChange={(value) => updateJob("salaryMax", value)} /></div>
+            <div className="mb-1 mt-8 flex items-center gap-3 border-b border-[var(--rushd-border)] pb-4"><FileText className="h-5 w-5 text-[var(--rushd-accent)]" /><div><h2 className="font-bold">تفاصيل الإعلان</h2><p className="text-sm text-[var(--rushd-muted)]">اكتب محتوى واضحًا وقابلًا للمسح السريع.</p></div></div>
             <Textarea label="وصف الوظيفة" value={job.description} onChange={(value) => updateJob("description", value)} required />
             <Textarea label="المتطلبات" value={job.requirements} onChange={(value) => updateJob("requirements", value)} required />
-            <button disabled={saving} className="mt-5 rounded-xl bg-[linear-gradient(145deg,var(--rushd-accent-2),var(--rushd-accent))] px-6 py-3 font-black text-[var(--rushd-ink)] transition hover:-translate-y-0.5 disabled:opacity-60">
+            <button disabled={saving} className="mt-6 min-h-12 bg-[var(--rushd-accent)] px-6 font-bold text-[var(--rushd-ink)] transition hover:bg-[var(--rushd-accent-2)] disabled:opacity-60">
               <Save className="ml-2 inline h-5 w-5" />
               {editId ? "حفظ التعديل" : "نشر الوظيفة"}
             </button>
@@ -124,7 +126,7 @@ function Input({ label, value, onChange, ...props }) {
   return (
     <label className="block">
       <span className="mb-2 block text-sm font-bold text-[var(--rushd-muted)]">{label}</span>
-      <UiInput {...props} value={value} onChange={(event) => onChange(event.target.value)} />
+      <UiInput className="rounded-none" {...props} value={value} onChange={(event) => onChange(event.target.value)} />
     </label>
   );
 }
@@ -133,7 +135,7 @@ function Textarea({ label, value, onChange, ...props }) {
   return (
     <label className="mt-4 block">
       <span className="mb-2 block text-sm font-bold text-[var(--rushd-muted)]">{label}</span>
-      <UiTextarea {...props} value={value} onChange={(event) => onChange(event.target.value)} />
+      <UiTextarea className="rounded-none" {...props} value={value} onChange={(event) => onChange(event.target.value)} />
     </label>
   );
 }

@@ -26,10 +26,10 @@ function ResumePublicPreview() {
   }, [resumeId]);
 
   return (
-    <main dir="rtl" className="min-h-screen bg-[var(--rushd-bg)] px-5 py-8 text-[var(--rushd-text)]">
+    <main dir="rtl" className="resume-shell min-h-screen bg-[var(--rushd-bg)] px-5 py-8 text-[var(--rushd-text)]">
       <div className="mx-auto mb-6 flex max-w-5xl items-center justify-between">
         <Link to="/" className="flex items-center gap-3">
-          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[var(--rushd-accent)] text-xl font-black text-[var(--rushd-ink)]">
+          <div className="flex h-12 w-12 items-center justify-center bg-[var(--rushd-accent)] text-xl font-bold text-[var(--rushd-ink)]">
             ر
           </div>
           <div>
@@ -41,7 +41,7 @@ function ResumePublicPreview() {
           <button
             type="button"
             onClick={() => window.print()}
-            className="rounded-2xl bg-[var(--rushd-accent)] px-5 py-3 font-black text-[var(--rushd-ink)]"
+            className="bg-[var(--rushd-accent)] px-5 py-3 font-bold text-[var(--rushd-ink)]"
           >
             تحميل PDF
           </button>
@@ -55,7 +55,7 @@ function ResumePublicPreview() {
       ) : resume ? (
         <ResumePreview resume={resume} />
       ) : (
-        <div className="mx-auto max-w-xl rounded-[2rem] border border-[var(--rushd-border)] bg-[var(--rushd-card)] p-10 text-center">
+        <div className="mx-auto max-w-xl border border-[var(--rushd-border)] bg-[var(--rushd-card)] p-10 text-center">
           <h1 className="text-2xl font-black">السيرة غير متاحة</h1>
           <p className="mt-3 text-[var(--rushd-muted)]">قد تكون السيرة خاصة أو تم حذفها.</p>
         </div>

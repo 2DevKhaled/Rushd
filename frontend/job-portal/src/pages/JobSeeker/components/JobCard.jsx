@@ -22,13 +22,13 @@ function JobCard({ job, onToggleSave }) {
     : "border-[var(--rushd-badge-border)] bg-[var(--rushd-badge-bg)] text-[var(--rushd-badge-text)]";
 
   return (
-    <article className="group rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 text-right shadow-2xl shadow-black/20 transition hover:-translate-y-1 hover:border-[var(--rushd-border-strong)]">
+    <article className="group relative flex h-full flex-col border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 text-right shadow-[0_16px_45px_var(--rushd-shadow)] transition hover:border-[var(--rushd-border-strong)]">
       <div className="mb-5 flex items-start justify-between gap-4">
         <div className="flex items-center gap-3">
           <img
             src={job.company?.companyLogo || "/favicon.svg"}
             alt={companyName}
-            className="h-12 w-12 rounded-xl border border-[var(--rushd-border)] object-cover"
+            className="h-12 w-12 border border-[var(--rushd-border)] object-cover"
           />
           <div>
             <p className="text-sm font-bold text-[var(--rushd-muted)]">{companyName}</p>
@@ -39,7 +39,7 @@ function JobCard({ job, onToggleSave }) {
           <button
             type="button"
             onClick={() => onToggleSave(job)}
-            className="rounded-xl border border-[var(--rushd-border)] p-3 text-[var(--rushd-accent)] transition hover:bg-[var(--rushd-accent)] hover:text-[var(--rushd-ink)]"
+            className="flex h-10 w-10 items-center justify-center border border-[var(--rushd-border)] text-[var(--rushd-accent)] transition hover:bg-[var(--rushd-accent)] hover:text-[var(--rushd-ink)]"
             aria-label={job.isSaved ? "إزالة من المحفوظات" : "حفظ الوظيفة"}
           >
             {job.isSaved ? <BookmarkCheck className="h-5 w-5" /> : <Bookmark className="h-5 w-5" />}
@@ -47,7 +47,7 @@ function JobCard({ job, onToggleSave }) {
         )}
       </div>
 
-      <p className="line-clamp-3 min-h-16 leading-7 text-[var(--rushd-muted)]">{job.description}</p>
+      <p className="line-clamp-3 min-h-16 flex-1 leading-7 text-[var(--rushd-muted)]">{job.description}</p>
 
       <div className="mt-5 grid gap-2 text-sm text-[var(--rushd-muted)]">
         <span className="flex items-center gap-2">
@@ -65,13 +65,13 @@ function JobCard({ job, onToggleSave }) {
       </div>
 
       <div className="mt-6 flex items-center justify-between gap-3">
-        <span className={`rounded-full border px-3.5 py-1.5 text-xs font-black ${statusClass}`}>
+        <span className={`border px-3 py-1.5 text-xs font-bold ${statusClass}`}>
           {job.applicationStatus ? `حالة التقديم: ${job.applicationStatus}` : "متاح للتقديم"}
         </span>
         <button
           type="button"
           onClick={() => navigate(`/job/${job._id}`)}
-          className="rounded-xl bg-[var(--rushd-accent-2)] px-5 py-3 text-sm font-black text-[var(--rushd-ink)] transition group-hover:bg-[var(--rushd-accent-2)]"
+          className="bg-[var(--rushd-accent)] px-5 py-3 text-sm font-bold text-[var(--rushd-ink)] transition hover:bg-[var(--rushd-accent-2)]"
         >
           التفاصيل
         </button>

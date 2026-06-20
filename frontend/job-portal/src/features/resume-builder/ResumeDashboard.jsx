@@ -6,7 +6,7 @@ import pdfToText from "react-pdftotext";
 import axiosInstance from "../../pages/utils/axiosInstance";
 import { API_PATHS } from "../../pages/utils/apiPaths";
 import LuxuryDashboardLayout from "../../components/dashboard/LuxuryDashboardLayout";
-import { EmptyState, LoadingPanel, StatCard } from "../../components/dashboard/DashboardWidgets";
+import { EmptyState, LoadingPanel } from "../../components/dashboard/DashboardWidgets";
 import { Card } from "../../components/ui/card";
 import { Input } from "../../components/ui/input";
 
@@ -95,30 +95,28 @@ function ResumeDashboard() {
 
   return (
     <LuxuryDashboardLayout
-      eyebrow="RESUME BUILDER"
+      eyebrow="مساحة السير الذاتية"
       title="ابنِ سيرة ذاتية جاهزة للتقديم"
       description="أنشئ نسخة منظمة، عدّل الأقسام، غيّر القالب واللون، وشارك رابط معاينة عام عند الحاجة."
     >
-        <section className="mb-6 grid gap-4 md:grid-cols-3">
-          <StatCard icon={FileText} label="السير الذاتية" value={loading ? "..." : resumes.length} hint="محفوظة في حسابك" />
-          <StatCard icon={Upload} label="استيراد PDF" value="متاح" hint="تحويل إلى سيرة قابلة للتعديل" tone="blue" />
-          <StatCard icon={Plus} label="إنشاء جديد" value="فوري" hint="ابدأ من قالب منظم" tone="green" />
+        <section className="mb-6 grid border border-[var(--rushd-border)] bg-[var(--rushd-surface)] md:grid-cols-3">
+          {[[FileText, "السير المحفوظة", loading ? "..." : resumes.length], [Upload, "استيراد PDF", "متاح"], [Plus, "إنشاء جديد", "فوري"]].map(([Icon, label, value], index) => <div key={label} className={`flex items-center gap-4 p-5 ${index < 2 ? "border-b border-[var(--rushd-border)] md:border-b-0 md:border-l" : ""}`}><span className="flex h-11 w-11 items-center justify-center bg-[var(--rushd-card)] text-[var(--rushd-accent)]"><Icon className="h-5 w-5" /></span><span><small className="block text-[var(--rushd-muted)]">{label}</small><strong className="mt-1 block text-2xl">{value}</strong></span></div>)}
         </section>
 
-        <section className="mb-8 grid gap-5 lg:grid-cols-[0.8fr_1.2fr]">
-          <div className="space-y-4">
-            <Card className="p-5">
+        <section className="mb-8 grid gap-5 lg:grid-cols-2">
+            <Card className="rounded-none p-5">
+            <div className="mb-5 border-b border-[var(--rushd-border)] pb-4"><h2 className="text-xl font-bold">إنشاء سيرة</h2><p className="mt-1 text-sm text-[var(--rushd-muted)]">ابدأ بقالب منظم وأضف بياناتك.</p></div>
             <form onSubmit={createResume}>
               <label className="mb-2 block text-sm font-bold text-[var(--rushd-muted)]">اسم السيرة</label>
               <Input
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
-                className="mb-4"
+                className="mb-4 rounded-none"
               />
               <button
                 type="submit"
                 disabled={creating}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[linear-gradient(145deg,var(--rushd-accent-2),var(--rushd-accent))] px-5 py-3 font-black text-[var(--rushd-ink)] disabled:opacity-60"
+                className="flex w-full items-center justify-center gap-2 bg-[var(--rushd-accent)] px-5 py-3 font-bold text-[var(--rushd-ink)] disabled:opacity-60"
               >
                 {creating ? <Loader2 className="h-5 w-5 animate-spin" /> : <Plus className="h-5 w-5" />}
                 إنشاء سيرة جديدة
@@ -126,42 +124,32 @@ function ResumeDashboard() {
             </form>
             </Card>
 
-            <Card className="p-5">
+            <Card className="rounded-none p-5">
+            <div className="mb-5 border-b border-[var(--rushd-border)] pb-4"><h2 className="text-xl font-bold">استيراد سيرة</h2><p className="mt-1 text-sm text-[var(--rushd-muted)]">حوّل ملف PDF إلى نسخة قابلة للتعديل.</p></div>
             <form onSubmit={importResume}>
               <label className="mb-2 block text-sm font-bold text-[var(--rushd-muted)]">استيراد PDF اختياري</label>
               <input
                 type="file"
                 accept="application/pdf"
                 onChange={(event) => setResumeFile(event.target.files?.[0] || null)}
-                className="mb-4 w-full rounded-xl border border-dashed border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-sm text-[var(--rushd-muted)] file:ml-4 file:rounded-xl file:border-0 file:bg-[var(--rushd-card)] file:px-3 file:py-2 file:text-[var(--rushd-text)]"
+                className="mb-4 w-full border border-dashed border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-sm text-[var(--rushd-muted)] file:ml-4 file:border-0 file:bg-[var(--rushd-surface)] file:px-3 file:py-2 file:text-[var(--rushd-text)]"
               />
               <button
                 type="submit"
                 disabled={importing}
-                className="flex w-full items-center justify-center gap-2 rounded-xl border border-[var(--rushd-border-strong)] px-5 py-3 font-black text-[var(--rushd-accent)] disabled:opacity-60"
+                className="flex w-full items-center justify-center gap-2 border border-[var(--rushd-border-strong)] px-5 py-3 font-bold text-[var(--rushd-accent)] disabled:opacity-60"
               >
                 {importing ? <Loader2 className="h-5 w-5 animate-spin" /> : <Upload className="h-5 w-5" />}
                 استيراد وبناء السيرة
               </button>
             </form>
             </Card>
-          </div>
-
-          <Card className="p-8">
-            <p className="mb-3 text-sm font-black uppercase tracking-[0.25em] text-[var(--rushd-accent)]">
-              CAREER DOSSIER
-            </p>
-            <h2 className="text-3xl font-black md:text-5xl">وثيقة مهنية مصقولة، قابلة للتعديل والمشاركة.</h2>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-[var(--rushd-muted)]">
-              استخدم بياناتك الحقيقية، افتح المحرر، ثم شارك نسخة عامة عند الحاجة من دون تغيير أي مسار في النظام.
-            </p>
-          </Card>
         </section>
 
-        <section className="rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5">
+        <section className="border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5">
           <div className="mb-5 flex items-center justify-between">
             <h2 className="text-2xl font-black">سيرك الذاتية</h2>
-            <span className="rounded-full border border-[var(--rushd-badge-border)] bg-[var(--rushd-badge-bg)] px-3.5 py-1.5 text-sm font-black text-[var(--rushd-badge-text)]">
+            <span className="border border-[var(--rushd-badge-border)] bg-[var(--rushd-badge-bg)] px-3.5 py-1.5 text-sm font-bold text-[var(--rushd-badge-text)]">
               {resumes.length} سيرة
             </span>
           </div>
@@ -175,7 +163,7 @@ function ResumeDashboard() {
               {resumes.map((resume) => (
                 <article
                   key={resume._id}
-                  className="group rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-card)] p-5 transition hover:border-[var(--rushd-border-strong)]"
+                  className="group border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] p-5 transition hover:border-[var(--rushd-border-strong)]"
                 >
                   <div className="mb-5 flex items-start justify-between gap-3">
                     <div>
@@ -187,7 +175,7 @@ function ResumeDashboard() {
                     <button
                       type="button"
                       onClick={() => deleteResume(resume._id)}
-                      className="rounded-xl p-2 text-[var(--rushd-muted)] transition hover:bg-red-500/10 hover:text-red-300"
+                      className="flex h-9 w-9 items-center justify-center border border-[var(--rushd-danger-border)] text-[var(--rushd-danger-text)] transition hover:bg-[var(--rushd-danger-bg)]"
                     >
                       <Trash2 className="h-5 w-5" />
                     </button>
@@ -195,7 +183,7 @@ function ResumeDashboard() {
                   <button
                     type="button"
                     onClick={() => navigate(`/resume-builder/${resume._id}`)}
-                      className="w-full rounded-xl bg-[var(--rushd-accent-2)] px-4 py-3 font-black text-[var(--rushd-ink)] transition group-hover:bg-[var(--rushd-accent-2)]"
+                      className="w-full bg-[var(--rushd-accent)] px-4 py-3 font-bold text-[var(--rushd-ink)] transition hover:bg-[var(--rushd-accent-2)]"
                   >
                     فتح وتعديل
                   </button>

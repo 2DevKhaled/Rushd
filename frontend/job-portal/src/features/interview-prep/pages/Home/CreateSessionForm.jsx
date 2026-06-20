@@ -64,12 +64,10 @@ function CreateSessionForm() {
   return (
     <div
       dir="rtl"
-      className="w-[92vw] rounded-3xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-6 text-[var(--rushd-text)] shadow-2xl md:w-[38vw] md:p-7"
+      className="w-[92vw] border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-6 text-[var(--rushd-text)] shadow-2xl md:w-[38rem] md:p-7"
     >
       <div className="mb-6">
-        <p className="font-mono text-xs font-bold text-[var(--rushd-accent)]">
-          NEW_SESSION
-        </p>
+        <p className="text-xs font-bold text-[var(--rushd-accent)]">جلسة جديدة</p>
         <h3 className="mt-2 text-2xl font-black text-[var(--rushd-text)]">
           إنشاء جلسة مقابلة
         </h3>
@@ -109,14 +107,14 @@ function CreateSessionForm() {
         />
 
         {error && (
-          <p className="rounded-xl border border-red-300/20 bg-red-400/10 px-4 py-3 text-sm text-red-200">
+          <p className="border border-[var(--rushd-danger-border)] bg-[var(--rushd-danger-bg)] px-4 py-3 text-sm text-[var(--rushd-danger-text)]">
             {error}
           </p>
         )}
 
         <button
           type="submit"
-          className="flex h-12 w-full cursor-pointer items-center justify-center rounded-xl bg-[linear-gradient(145deg,var(--rushd-accent-2),var(--rushd-accent))] font-black text-[var(--rushd-ink)] transition hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-60"
+          className="flex h-12 w-full cursor-pointer items-center justify-center bg-[var(--rushd-accent)] font-bold text-[var(--rushd-ink)] transition hover:bg-[var(--rushd-accent-2)] disabled:cursor-not-allowed disabled:opacity-60"
           disabled={isLoading}
         >
           {isLoading ? (

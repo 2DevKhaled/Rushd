@@ -29,7 +29,7 @@ function QuestionCard({
   return (
     <div
       dir="rtl"
-      className="group mb-4 overflow-hidden rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-2xl transition duration-300 hover:border-[var(--rushd-border-strong)]"
+      className="group mb-3 overflow-hidden border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-[0_12px_35px_var(--rushd-shadow)] transition duration-300 hover:border-[var(--rushd-border-strong)]"
     >
       <div className="flex items-start justify-between gap-4">
         <button
@@ -37,7 +37,7 @@ function QuestionCard({
           className="flex flex-1 items-start gap-4 text-right"
           onClick={toggleExpand}
         >
-          <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--rushd-accent)] font-mono text-sm font-black text-[var(--rushd-ink)]">
+          <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center bg-[var(--rushd-accent)] text-sm font-bold text-[var(--rushd-ink)]">
             Q
           </span>
           <h3 className="leading-8 text-[var(--rushd-text)] md:text-[15px]">{question}</h3>
@@ -46,7 +46,7 @@ function QuestionCard({
         <div className="flex shrink-0 items-center gap-2">
           <button
             type="button"
-            className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-bold transition ${
+            className={`flex items-center gap-2 border px-3 py-2 text-xs font-bold transition ${
               isPinned
                 ? "border-[var(--rushd-badge-border)] bg-[var(--rushd-badge-bg)] text-[var(--rushd-badge-text)]"
                 : "border-[var(--rushd-border)] bg-[var(--rushd-card)] text-[var(--rushd-muted)] hover:border-[var(--rushd-border-strong)] hover:text-[var(--rushd-text)]"
@@ -57,7 +57,7 @@ function QuestionCard({
           </button>
           <button
             type="button"
-            className="flex items-center gap-2 rounded-lg border border-[var(--rushd-badge-border)] bg-[var(--rushd-badge-bg)] px-3 py-2 text-xs font-black text-[var(--rushd-badge-text)] transition hover:bg-[var(--rushd-accent)] hover:text-[var(--rushd-ink)]"
+            className="flex items-center gap-2 border border-[var(--rushd-badge-border)] bg-[var(--rushd-badge-bg)] px-3 py-2 text-xs font-bold text-[var(--rushd-badge-text)] transition hover:bg-[var(--rushd-accent)] hover:text-[var(--rushd-ink)]"
             onClick={() => onLearnMore()}
           >
             <Sparkles className="h-4 w-4" />
@@ -83,7 +83,7 @@ function QuestionCard({
       >
         <div
           ref={contnetRef}
-          className="mt-4 rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] px-5 py-4 text-[var(--rushd-text)]"
+          className="mt-4 border-r-2 border-[var(--rushd-accent)] bg-[var(--rushd-card)] px-5 py-4 text-[var(--rushd-text)]"
         >
           <AiResponsePreview content={answer} />
         </div>

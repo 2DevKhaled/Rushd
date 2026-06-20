@@ -40,11 +40,11 @@ function ProfilePhotoSelector({ image, setImage, preview, setPreview }) {
       />
 
       {!image ? (
-        <div className="relative flex h-24 w-24 cursor-pointer items-center justify-center rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)]">
+        <div className="relative flex h-24 w-24 cursor-pointer items-center justify-center border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)]">
           <User className="h-10 w-10 text-[var(--rushd-muted)]" />
           <button
             type="button"
-            className="absolute -bottom-2 -left-2 flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl bg-[var(--rushd-accent)] text-[var(--rushd-ink)] shadow-lg transition hover:bg-[var(--rushd-accent-2)]"
+            className="absolute -bottom-2 -left-2 flex h-9 w-9 cursor-pointer items-center justify-center bg-[var(--rushd-accent)] text-[var(--rushd-ink)] shadow-lg transition hover:bg-[var(--rushd-accent-2)]"
             onClick={onChooseFile}
             aria-label="رفع صورة شخصية"
           >
@@ -56,10 +56,10 @@ function ProfilePhotoSelector({ image, setImage, preview, setPreview }) {
           <img
             src={preview || previewUrl}
             alt="صورة المستخدم"
-            className="h-24 w-24 rounded-2xl border border-[var(--rushd-border)] object-cover"
+            className="h-24 w-24 border border-[var(--rushd-border)] object-cover"
           />
           <button
-            className="absolute -bottom-2 -left-2 flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border border-red-300/20 bg-red-400/10 text-red-200 transition hover:bg-red-400/20"
+            className="absolute -bottom-2 -left-2 flex h-9 w-9 cursor-pointer items-center justify-center border border-[var(--rushd-danger-border)] bg-[var(--rushd-danger-bg)] text-[var(--rushd-danger-text)] transition hover:opacity-80"
             type="button"
             onClick={handleRemoveImage}
             aria-label="حذف الصورة"

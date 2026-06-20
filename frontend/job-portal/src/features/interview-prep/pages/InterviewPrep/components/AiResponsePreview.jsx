@@ -16,7 +16,7 @@ const AiResponsePreview = ({ content }) => {
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-flex items-center gap-2 rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-3 py-2 text-xs font-bold text-[var(--rushd-muted)] transition hover:text-[var(--rushd-text)]"
+          className="inline-flex items-center gap-2 border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-3 py-2 text-xs font-bold text-[var(--rushd-muted)] transition hover:text-[var(--rushd-text)]"
         >
           {copied ? (
             <CopyCheck className="h-4 w-4 text-[var(--rushd-accent)]" />

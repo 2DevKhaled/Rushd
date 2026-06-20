@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  ArrowLeft,
   User,
   Mail,
   Lock,
@@ -11,9 +12,12 @@ import {
   CheckCircle,
   AlertCircle,
   Loader,
+  Moon,
+  Sun,
 } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 import {
   normalizeApiError,
   validateAvatar,
@@ -23,6 +27,7 @@ import {
 import uploadImage from "../utils/uploadImage";
 function SignUp() {
   const { register } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
@@ -141,309 +146,116 @@ function SignUp() {
       }));
     }
   };
+
+  const fieldClass = (hasError) =>
+    `auth-input auth-input-icon ${hasError ? "auth-input-error" : ""}`;
+
   if (formState.success) {
     return (
-      <div
-        dir="rtl"
-        className="relative flex min-h-screen items-center justify-center overflow-hidden bg-[var(--rushd-bg)] px-4 text-[var(--rushd-text)]"
-      >
-        <div className="landing-grid absolute inset-0 opacity-[0.18] [background-image:linear-gradient(var(--rushd-glow)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.11)_1px,transparent_1px)] [background-size:92px_92px]" />
-        <div className="relative w-full max-w-sm rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-7 text-center shadow-2xl shadow-black/50 backdrop-blur">
-          <CheckCircle className="mx-auto mb-5 h-14 w-14 text-[var(--rushd-accent)]" />
-          <h2 className="text-2xl font-black">اهلاً بك في رُشد </h2>
-          <p className="mt-3 text-[var(--rushd-muted)]">تم إنشاء حساب بنجاح.</p>
-          <div className="mx-auto mt-6 h-7 w-7 animate-spin rounded-full border-2 border-[var(--rushd-accent)] border-t-transparent" />
-          <p className="mt-3 text-sm text-[var(--rushd-muted)]">
-            يتم تحويلك إلى لوحة التحكم...
-          </p>
+      <div dir="rtl" className="auth-page flex min-h-screen items-center justify-center bg-[var(--auth-bg)] px-4 text-[var(--auth-text)]">
+        <div className="w-full max-w-md border border-[var(--auth-border)] bg-[var(--auth-surface)] p-9 text-center shadow-[0_30px_90px_var(--auth-shadow)]">
+          <span className="mx-auto flex h-16 w-16 items-center justify-center bg-[var(--auth-accent)] text-[var(--auth-ink)]"><CheckCircle className="h-8 w-8" /></span>
+          <h1 className="mt-6 text-3xl font-bold">أهلًا بك في رُشد</h1>
+          <p className="mt-3 text-[var(--auth-muted)]">تم إنشاء حسابك بنجاح.</p>
+          <Loader className="mx-auto mt-7 h-6 w-6 animate-spin text-[var(--auth-accent)]" />
         </div>
       </div>
     );
   }
 
   return (
-    <div
-      dir="rtl"
-      className="relative min-h-screen overflow-hidden bg-[var(--rushd-bg)] px-4 py-8 text-[var(--rushd-text)]"
-    >
-      <div className="landing-grid absolute inset-0 opacity-[0.2] [background-image:linear-gradient(var(--rushd-glow)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.11)_1px,transparent_1px)] [background-size:92px_92px]" />
-      <div className="absolute left-1/2 top-24 h-[520px] w-[900px] -translate-x-1/2 rounded-[2rem] border border-[var(--rushd-border)] bg-[var(--rushd-surface)] shadow-2xl shadow-black/50" />
+    <div dir="rtl" className="auth-page min-h-screen bg-[var(--auth-bg)] text-[var(--auth-text)]">
+      <div className="grid min-h-screen lg:grid-cols-[minmax(0,1fr)_minmax(410px,.68fr)]">
+        <main className="relative min-w-0 px-5 py-24 sm:px-10 lg:px-14 xl:px-20">
+          <Link to="/" className="absolute right-5 top-6 flex items-center gap-3 sm:right-10 lg:right-14 xl:right-20">
+            <span className="flex h-11 w-11 items-center justify-center bg-[var(--auth-accent)] text-xl font-bold text-[var(--auth-ink)]">ر</span>
+            <span><strong className="block text-xl leading-none">رُشد</strong><small className="mt-1 block text-[10px] font-semibold text-[var(--auth-muted)]" dir="ltr">CAREER PLATFORM</small></span>
+          </Link>
+          <button type="button" onClick={toggleTheme} className="absolute left-5 top-6 flex h-11 w-11 items-center justify-center border border-[var(--auth-border)] text-[var(--auth-text)] transition hover:border-[var(--auth-border-strong)] sm:left-10 lg:left-14 xl:left-20" aria-label="تبديل المظهر" title="تبديل المظهر">
+            {isDark ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          </button>
 
-      <div className="relative mx-auto flex min-h-[calc(100vh-4rem)] max-w-6xl items-center justify-center">
-        <div className="grid w-full overflow-hidden rounded-3xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] shadow-2xl shadow-black/50 backdrop-blur lg:grid-cols-[0.85fr_1.15fr]">
-          <aside className="relative hidden border-l border-[var(--rushd-border)] p-8 lg:block">
-            <Link to="/" className="mb-10 flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--rushd-accent)] text-xl font-black text-[var(--rushd-ink)]">
-                ر
-              </div>
-              <div className="leading-none">
-                <span className="block text-xl font-black">رُشد</span>
-                <span className="mt-1 block text-xs font-bold text-[var(--rushd-muted)]">
-                  للجاهزية المهنية
-                </span>
-              </div>
-            </Link>
-
-            <div className="mt-12">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-xl border border-[var(--rushd-border-strong)] bg-[var(--rushd-card)] px-3.5 py-2 text-xs font-bold text-[var(--rushd-accent)]">
-                <UserCheck className="h-4 w-4" />
-                بوابتك للانضمام إلى رُشد
-              </div>
-              <h1 className="text-4xl font-black leading-tight">
-                أنشئ حسابك
-                <span className="block text-[var(--rushd-accent)]">وابدأ مسارك المهني</span>
-              </h1>
-              <p className="mt-5 max-w-sm leading-8 text-[var(--rushd-muted)]">
-                اختر دورك، أضف بياناتك الأساسية، وانضم إلى منصة رُشد للجاهزية
-                المهنية.
-              </p>
+          <div className="mx-auto w-full max-w-2xl">
+            <div className="mb-8">
+              <p className="mb-3 text-sm font-bold text-[var(--auth-accent)]">حساب جديد</p>
+              <h1 className="text-4xl font-bold sm:text-5xl">ابدأ رحلتك مع رُشد</h1>
+              <p className="mt-4 leading-8 text-[var(--auth-muted)]">اختر نوع حسابك، ثم أضف بياناتك الأساسية للانطلاق.</p>
             </div>
 
-            <div className="mt-10 grid gap-2.5">
-              {[
-                "ملف مهني واضح",
-                "فرص وتقديمات منظمة",
-                "تجربة عربية موجهة للطلاب والشركات",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-3.5 py-2.5 text-sm font-semibold text-[var(--rushd-muted)]"
-                >
-                  <span className="ml-3 inline-block h-2 w-2 bg-[var(--rushd-accent)]" />
-                  {item}
-                </div>
-              ))}
-            </div>
-          </aside>
-
-          <main className="p-5 sm:p-8">
-            <div className="mb-7 text-right">
-              <Link to="/" className="mb-6 inline-flex items-center gap-3 lg:hidden">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[var(--rushd-accent)] text-xl font-black text-[var(--rushd-ink)]">
-                  ر
-                </div>
-                <span className="text-xl font-black">رُشد</span>
-              </Link>
-
-              <p className="font-mono text-sm font-bold text-[var(--rushd-accent)]">
-                SIGN_UP
-              </p>
-              <h2 className="mt-3 text-3xl font-black">إنشاء حساب</h2>
-              <p className="mt-3 leading-7 text-[var(--rushd-muted)]">
-                أدخل بياناتك لاستخدام رُشد كطالب أو صاحب عمل.
-              </p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div>
-                <label className="mb-2 block text-sm font-bold text-[var(--rushd-text)]">
-                  الاسم الكامل
-                </label>
-                <div className="relative">
-                  <User className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--rushd-muted)]" />
-                  <input
-                    type="text"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
-                    className="w-full rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] py-3.5 pl-4 pr-12 text-right text-[var(--rushd-text)] outline-none transition placeholder:text-[var(--rushd-muted)] focus:border-[var(--rushd-border-strong)]"
-                    placeholder="أدخل اسمك الكامل"
-                  />
-                </div>
-                {formState.errors.fullName && (
-                  <p className="mt-2 flex items-center gap-2 text-sm text-red-300">
-                    <AlertCircle className="h-4 w-4" />
-                    {formState.errors.fullName}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-bold text-[var(--rushd-text)]">
-                  البريد الإلكتروني
-                </label>
-                <div className="relative">
-                  <Mail className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--rushd-muted)]" />
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className="w-full rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] py-3.5 pl-4 pr-12 text-right text-[var(--rushd-text)] outline-none transition placeholder:text-[var(--rushd-muted)] focus:border-[var(--rushd-border-strong)]"
-                    placeholder="example@email.com"
-                  />
-                </div>
-                {formState.errors.email && (
-                  <p className="mt-2 flex items-center gap-2 text-sm text-red-300">
-                    <AlertCircle className="h-4 w-4" />
-                    {formState.errors.email}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-bold text-[var(--rushd-text)]">
-                  كلمة المرور
-                </label>
-                <div className="relative">
-                  <Lock className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--rushd-muted)]" />
-                  <input
-                    type={formState.showPassword ? "text" : "password"}
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className="w-full rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] py-3.5 pl-12 pr-12 text-right text-[var(--rushd-text)] outline-none transition placeholder:text-[var(--rushd-muted)] focus:border-[var(--rushd-border-strong)]"
-                    placeholder="أنشئ كلمة مرور قوية"
-                  />
-                  <button
-                    type="button"
-                    onClick={() =>
-                      setFormState((prev) => ({
-                        ...prev,
-                        showPassword: !prev.showPassword,
-                      }))
-                    }
-                    className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--rushd-muted)] transition hover:text-[var(--rushd-text)]"
-                  >
-                    {formState.showPassword ? (
-                      <EyeOff className="h-5 w-5" />
-                    ) : (
-                      <Eye className="h-5 w-5" />
-                    )}
-                  </button>
-                </div>
-                {formState.errors.password && (
-                  <p className="mt-2 flex items-center gap-2 text-sm text-red-300">
-                    <AlertCircle className="h-4 w-4" />
-                    {formState.errors.password}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-bold text-[var(--rushd-text)]">
-                  الصورة الشخصية
-                </label>
-                <div className="flex items-center gap-4 rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] p-4">
-                  <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)]">
-                    {formState.avatarPreview ? (
-                      <img
-                        src={formState.avatarPreview}
-                        alt="Avatar Preview"
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <User className="h-8 w-8 text-[var(--rushd-muted)]" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <input
-                      type="file"
-                      id="avatar"
-                      accept=".jpg,.jpeg,.png"
-                      onChange={handleAvatarChange}
-                      className="hidden"
-                    />
-                    <label
-                      htmlFor="avatar"
-                      className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-[var(--rushd-accent)] px-4 py-2.5 text-sm font-black text-[var(--rushd-ink)] transition hover:bg-[var(--rushd-accent-2)]"
-                    >
-                      <Upload className="h-4 w-4" />
-                      <span>رفع صورة</span>
-                    </label>
-                    <p className="mt-2 text-xs font-semibold text-[var(--rushd-muted)]">
-                      JPG أو PNG حتى 5MB
-                    </p>
-                  </div>
-                </div>
-                {formState.errors.avatar && (
-                  <p className="mt-2 flex items-center gap-2 text-sm text-red-300">
-                    <AlertCircle className="h-4 w-4" />
-                    {formState.errors.avatar}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <label className="mb-2 block text-sm font-bold text-[var(--rushd-text)]">
-                  نوع الحساب
-                </label>
+            <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+              <fieldset>
+                <legend className="mb-3 text-sm font-bold">أنا هنا بصفتي</legend>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <button
-                    type="button"
-                    onClick={() => handleRoleChange("jobseeker")}
-                    className={`rounded-2xl border p-4 text-right transition hover:-translate-y-0.5 ${
-                      formData.role === "jobseeker"
-                        ? "border-[var(--rushd-border-strong)] bg-[var(--rushd-card)]"
-                        : "border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] hover:border-[var(--rushd-border-strong)]"
-                    }`}
-                  >
-                    <UserCheck className="mb-3 h-6 w-6 text-[var(--rushd-accent)]" />
-                    <div className="font-black text-[var(--rushd-text)]">باحث عن عمل</div>
-                    <div className="mt-1 text-sm text-[var(--rushd-muted)]">
-                      أبحث عن فرص مهنية
-                    </div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleRoleChange("employer")}
-                    className={`rounded-2xl border p-4 text-right transition hover:-translate-y-0.5 ${
-                      formData.role === "employer"
-                        ? "border-[var(--rushd-border-strong)] bg-[var(--rushd-card)]"
-                        : "border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] hover:border-[var(--rushd-border-strong)]"
-                    }`}
-                  >
-                    <Building2 className="mb-3 h-6 w-6 text-[var(--rushd-accent)]" />
-                    <div className="font-black text-[var(--rushd-text)]">صاحب عمل</div>
-                    <div className="mt-1 text-sm text-[var(--rushd-muted)]">
-                      أبحث عن المواهب
-                    </div>
-                  </button>
+                  {[
+                    { role: "jobseeker", title: "باحث عن عمل", text: "أبني مساري وأبحث عن فرصة", Icon: UserCheck },
+                    { role: "employer", title: "صاحب عمل", text: "أنشر الفرص وأبحث عن المواهب", Icon: Building2 },
+                  ].map(({ role, title, text, Icon }) => {
+                    const selected = formData.role === role;
+                    return (
+                      <button key={role} type="button" onClick={() => handleRoleChange(role)} className={`relative flex items-center gap-4 border p-4 text-right transition ${selected ? "border-[var(--auth-accent)] bg-[var(--auth-soft)]" : "border-[var(--auth-border)] bg-[var(--auth-surface)] hover:border-[var(--auth-border-strong)]"}`} aria-pressed={selected}>
+                        <span className={`flex h-12 w-12 shrink-0 items-center justify-center ${selected ? "bg-[var(--auth-accent)] text-[var(--auth-ink)]" : "bg-[var(--auth-soft)] text-[var(--auth-accent)]"}`}><Icon className="h-6 w-6" /></span>
+                        <span><strong className="block">{title}</strong><small className="mt-1 block text-[var(--auth-muted)]">{text}</small></span>
+                        {selected && <CheckCircle className="absolute left-3 top-3 h-4 w-4 text-[var(--auth-accent)]" />}
+                      </button>
+                    );
+                  })}
                 </div>
-                {formState.errors.role && (
-                  <p className="mt-2 flex items-center gap-2 text-sm text-red-300">
-                    <AlertCircle className="h-4 w-4" />
-                    {formState.errors.role}
-                  </p>
-                )}
+                {formState.errors.role && <p className="auth-error"><AlertCircle className="h-4 w-4" />{formState.errors.role}</p>}
+              </fieldset>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="signup-name" className="mb-2 block text-sm font-bold">الاسم الكامل</label>
+                  <div className="relative"><User className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--auth-muted)]" /><input id="signup-name" type="text" name="fullName" value={formData.fullName} onChange={handleInputChange} autoComplete="name" placeholder="اسمك الكامل" className={fieldClass(formState.errors.fullName)} /></div>
+                  {formState.errors.fullName && <p className="auth-error"><AlertCircle className="h-4 w-4" />{formState.errors.fullName}</p>}
+                </div>
+                <div>
+                  <label htmlFor="signup-email" className="mb-2 block text-sm font-bold">البريد الإلكتروني</label>
+                  <div className="relative"><Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--auth-muted)]" /><input id="signup-email" dir="ltr" type="email" name="email" value={formData.email} onChange={handleInputChange} autoComplete="email" placeholder="name@example.com" className={`auth-input auth-input-email ${formState.errors.email ? "auth-input-error" : ""}`} /></div>
+                  {formState.errors.email && <p className="auth-error"><AlertCircle className="h-4 w-4" />{formState.errors.email}</p>}
+                </div>
               </div>
 
-              {formState.errors.submit && (
-                <div className="rounded-xl border border-red-300/20 bg-red-400/10 p-3.5">
-                  <p className="flex items-center gap-2 text-sm text-red-200">
-                    <AlertCircle className="h-4 w-4" />
-                    {formState.errors.submit}
-                  </p>
+              <div>
+                <label htmlFor="signup-password" className="mb-2 block text-sm font-bold">كلمة المرور</label>
+                <div className="relative">
+                  <Lock className="absolute right-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[var(--auth-muted)]" />
+                  <input id="signup-password" type={formState.showPassword ? "text" : "password"} name="password" value={formData.password} onChange={handleInputChange} autoComplete="new-password" placeholder="8 أحرف على الأقل" className={`auth-input auth-input-password ${formState.errors.password ? "auth-input-error" : ""}`} />
+                  <button type="button" onClick={() => setFormState((current) => ({ ...current, showPassword: !current.showPassword }))} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--auth-muted)] hover:text-[var(--auth-text)]" aria-label={formState.showPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"}>{formState.showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button>
                 </div>
-              )}
+                {formState.errors.password && <p className="auth-error"><AlertCircle className="h-4 w-4" />{formState.errors.password}</p>}
+              </div>
 
-              <button
-                type="submit"
-                disabled={formState.loading}
-                className="group inline-flex min-h-[52px] w-full items-center justify-center gap-3 rounded-xl bg-[var(--rushd-accent)] px-7 py-3.5 font-black text-[var(--rushd-ink)] transition hover:-translate-y-1 hover:bg-[var(--rushd-accent-2)] disabled:cursor-not-allowed disabled:opacity-70"
-              >
-                {formState.loading ? (
-                  <>
-                    <Loader className="h-5 w-5 animate-spin" />
-                    <span>جاري إنشاء الحساب...</span>
-                  </>
-                ) : (
-                  <span>إنشاء الحساب</span>
-                )}
+              <div className="flex flex-col gap-4 border border-[var(--auth-border)] bg-[var(--auth-surface)] p-4 sm:flex-row sm:items-center">
+                <span className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden bg-[var(--auth-soft)] text-[var(--auth-muted)]">
+                  {formState.avatarPreview ? <img src={formState.avatarPreview} alt="معاينة الصورة الشخصية" className="h-full w-full object-cover" /> : <User className="h-7 w-7" />}
+                </span>
+                <div className="min-w-0 flex-1"><strong className="block text-sm">الصورة الشخصية <span className="font-normal text-[var(--auth-muted)]">(اختيارية)</span></strong><p className="mt-1 text-xs text-[var(--auth-muted)]">JPG أو PNG حتى 5MB</p></div>
+                <input type="file" id="avatar" accept=".jpg,.jpeg,.png" onChange={handleAvatarChange} className="hidden" />
+                <label htmlFor="avatar" className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 border border-[var(--auth-border-strong)] px-4 text-sm font-bold transition hover:bg-[var(--auth-soft)]"><Upload className="h-4 w-4" />اختيار صورة</label>
+              </div>
+              {formState.errors.avatar && <p className="auth-error"><AlertCircle className="h-4 w-4" />{formState.errors.avatar}</p>}
+
+              {formState.errors.submit && <div className="auth-submit-error"><AlertCircle className="h-5 w-5 shrink-0" /><p>{formState.errors.submit}</p></div>}
+
+              <button type="submit" disabled={formState.loading} className="group flex min-h-14 w-full items-center justify-center gap-3 bg-[var(--auth-accent)] px-7 font-bold text-[var(--auth-ink)] transition hover:bg-[var(--auth-accent-hover)] disabled:cursor-not-allowed disabled:opacity-60">
+                {formState.loading ? <><Loader className="h-5 w-5 animate-spin" />جاري إنشاء الحساب...</> : <>إنشاء الحساب <ArrowLeft className="h-5 w-5 transition group-hover:-translate-x-1" /></>}
               </button>
-
-              <div className="pt-2 text-center text-sm text-[var(--rushd-muted)]">
-                لديك حساب بالفعل؟{" "}
-                <Link
-                  to="/login"
-                  className="font-bold text-[var(--rushd-accent)] transition hover:text-[var(--rushd-text)]"
-                >
-                  تسجيل الدخول
-                </Link>
-              </div>
+              <p className="text-center text-sm text-[var(--auth-muted)]">لديك حساب بالفعل؟ <Link to="/login" className="font-bold text-[var(--auth-accent)] hover:underline">تسجيل الدخول</Link></p>
             </form>
-          </main>
-        </div>
+          </div>
+        </main>
+
+        <aside className="auth-aside relative hidden overflow-hidden bg-[var(--auth-deep)] p-12 text-[var(--auth-on-deep)] lg:flex lg:flex-col lg:justify-between">
+          <div className="auth-rings absolute inset-0" />
+          <div className="relative text-xs text-[var(--auth-on-deep-muted)]" dir="ltr">RUSHD / NEW PATH</div>
+          <div className="relative py-16">
+            <p className="text-sm font-bold text-[var(--auth-pistachio)]">من أول خطوة</p>
+            <h2 className="mt-5 text-5xl font-bold leading-tight">ملفك.<br />فرصتك.<br /><span className="text-[var(--auth-accent)]">مستقبلك.</span></h2>
+            <p className="mt-7 max-w-sm leading-8 text-[var(--auth-on-deep-muted)]">حساب واحد يربط استعدادك المهني بالفرصة التي تستحقها.</p>
+          </div>
+          <div className="relative border-t border-[var(--auth-on-deep-border)] pt-7 text-sm text-[var(--auth-on-deep-muted)]">انضم كباحث عن عمل أو صاحب عمل، واختر المسار الذي يناسبك.</div>
+        </aside>
       </div>
     </div>
   );

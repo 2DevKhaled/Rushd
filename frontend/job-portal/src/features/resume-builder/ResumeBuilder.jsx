@@ -92,7 +92,7 @@ const Input = ({ label, ...props }) => (
     <span className="mb-2 block text-sm font-bold text-[var(--rushd-muted)]">{label}</span>
     <input
       {...props}
-      className="w-full rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-[var(--rushd-text)] outline-none transition placeholder:text-[var(--rushd-muted)] focus:border-[var(--rushd-accent)]"
+      className="w-full border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-[var(--rushd-text)] outline-none transition placeholder:text-[var(--rushd-muted)] focus:border-[var(--rushd-accent)]"
     />
   </label>
 );
@@ -102,7 +102,7 @@ const Textarea = ({ label, ...props }) => (
     <span className="mb-2 block text-sm font-bold text-[var(--rushd-muted)]">{label}</span>
     <textarea
       {...props}
-      className="min-h-36 w-full resize-y rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-[var(--rushd-text)] outline-none transition placeholder:text-[var(--rushd-muted)] focus:border-[var(--rushd-accent)]"
+      className="min-h-36 w-full resize-y border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-[var(--rushd-text)] outline-none transition placeholder:text-[var(--rushd-muted)] focus:border-[var(--rushd-accent)]"
     />
   </label>
 );
@@ -127,7 +127,7 @@ const MonthYearInput = ({ disabled = false, label, onChange, value }) => {
           disabled={disabled}
           value={month}
           onChange={(event) => updateDate(year, event.target.value)}
-          className="rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)] disabled:opacity-40"
+          className="border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)] disabled:opacity-40"
         >
           <option value="">Month</option>
           {monthOptions.map((option) => (
@@ -140,7 +140,7 @@ const MonthYearInput = ({ disabled = false, label, onChange, value }) => {
           disabled={disabled}
           value={year}
           onChange={(event) => updateDate(event.target.value, month)}
-          className="rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)] disabled:opacity-40"
+          className="border border-[var(--rushd-border)] bg-[var(--rushd-surface-strong)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)] disabled:opacity-40"
         >
           <option value="">Year</option>
           {yearOptions.map((option) => (
@@ -345,17 +345,16 @@ function ResumeBuilder() {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[var(--rushd-bg)]">
+      <main className="resume-shell flex min-h-screen items-center justify-center bg-[var(--rushd-bg)]">
         <Loader2 className="h-10 w-10 animate-spin text-[var(--rushd-accent)]" />
       </main>
     );
   }
 
   return (
-    <main dir="rtl" className="min-h-screen bg-[var(--rushd-bg)] text-[var(--rushd-text)]">
-      <div className="absolute inset-0 bg-[linear-gradient(var(--rushd-glow)_1px,transparent_1px),linear-gradient(90deg,var(--rushd-glow)_1px,transparent_1px)] bg-[size:64px_64px]" />
-      <div className="relative mx-auto max-w-[1600px] px-4 py-5">
-        <header className="mb-5 flex flex-wrap items-center justify-between gap-3 rounded-[2rem] border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-4">
+    <main dir="rtl" className="resume-shell min-h-screen bg-[var(--rushd-bg)] text-[var(--rushd-text)]">
+      <div className="mx-auto max-w-[1600px] px-4 py-5">
+        <header className="mb-5 flex flex-wrap items-center justify-between gap-3 border border-[var(--rushd-border)] border-r-4 border-r-[var(--rushd-accent)] bg-[var(--rushd-surface)] p-4 shadow-[0_16px_45px_var(--rushd-shadow)]">
           <div className="flex items-center gap-3">
             <Link
               to="/resume-builder"
@@ -433,7 +432,7 @@ function ResumeBuilder() {
         </header>
 
         <div className="grid gap-5 xl:grid-cols-[520px_1fr]">
-          <section className="self-start rounded-[2rem] border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-4 shadow-2xl shadow-black/20">
+          <section className="self-start border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-4 shadow-[0_16px_45px_var(--rushd-shadow)] xl:sticky xl:top-5 xl:max-h-[calc(100vh-2.5rem)] xl:overflow-y-auto">
             <nav className="mb-5 flex gap-2 overflow-x-auto pb-2">
               {sections.map((section) => (
                 <button
@@ -621,7 +620,7 @@ function ResumeBuilder() {
                       key={skill}
                       type="button"
                       onClick={() => updateResume({ skills: resume.skills.filter((item) => item !== skill) })}
-                      className="rounded-full border border-[var(--rushd-badge-border)] bg-[var(--rushd-badge-bg)] px-4 py-2 text-sm font-black text-[var(--rushd-badge-text)] transition hover:border-red-300/40 hover:bg-red-500/15"
+                      className="rounded-full border border-[var(--rushd-badge-border)] bg-[var(--rushd-badge-bg)] px-4 py-2 text-sm font-bold text-[var(--rushd-badge-text)] transition hover:border-[var(--rushd-danger-border)] hover:bg-[var(--rushd-danger-bg)]"
                     >
                       {skill} ×
                     </button>
@@ -712,7 +711,7 @@ function ResumeBuilder() {
             )}
           </section>
 
-          <section className="overflow-auto rounded-[2rem] border border-[var(--rushd-border)] bg-[var(--rushd-card)] p-4">
+          <section className="overflow-auto border border-[var(--rushd-border)] bg-[var(--rushd-card)] p-4">
             <ResumePreview resume={resume} />
           </section>
         </div>
@@ -736,7 +735,7 @@ function ListEditor({ items, emptyLabel, addLabel, onAdd, onRemove, renderItem }
               <button
                 type="button"
                 onClick={() => onRemove(index)}
-                className="rounded-xl p-2 text-[var(--rushd-muted)] hover:bg-red-500/10 hover:text-red-300"
+                className="rounded-xl p-2 text-[var(--rushd-muted)] hover:bg-[var(--rushd-danger-bg)] hover:text-[var(--rushd-danger-text)]"
               >
                 <Trash2 className="h-5 w-5" />
               </button>

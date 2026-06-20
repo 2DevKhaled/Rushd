@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { BookmarkCheck, BriefcaseBusiness, Filter, Loader2, MapPin } from "lucide-react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../context/AuthContext";
@@ -9,7 +9,7 @@ import SearchHeader from "./components/SearchHeader";
 import FilterContent from "./components/FilterContent";
 import JobCard from "./components/JobCard";
 import LuxuryDashboardLayout from "../../components/dashboard/LuxuryDashboardLayout";
-import { EmptyState, LoadingPanel, StatCard } from "../../components/dashboard/DashboardWidgets";
+import { EmptyState, LoadingPanel } from "../../components/dashboard/DashboardWidgets";
 import { Badge } from "../../components/ui/badge";
 
 const defaultFilters = {
@@ -23,8 +23,12 @@ const defaultFilters = {
 
 function JobsDashboard() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
-  const [filters, setFilters] = useState(defaultFilters);
+  const [filters, setFilters] = useState(() => ({
+    ...defaultFilters,
+    keyword: searchParams.get("search") || "",
+  }));
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -84,23 +88,25 @@ function JobsDashboard() {
   return (
     <LuxuryDashboardLayout
       role={user ? undefined : "public"}
-      eyebrow="JOBS"
+      eyebrow="سوق الفرص"
       title="ابحث عن فرصتك القادمة"
       description="استعرض الوظائف المتاحة، احفظ الفرص المناسبة، وقدّم مباشرة من منصة رُشد."
-      actions={
+      actions={user ? (
         <Link
           to="/saved-jobs"
-          className="inline-flex items-center gap-2 rounded-xl border border-[var(--rushd-border-strong)] px-4 py-3 text-sm font-black text-[var(--rushd-accent)] transition hover:bg-[var(--rushd-card)]"
+          className="inline-flex min-h-12 items-center gap-2 border border-[var(--rushd-border-strong)] px-4 text-sm font-bold text-[var(--rushd-accent)] transition hover:bg-[var(--rushd-card)]"
         >
           <BookmarkCheck className="h-5 w-5" />
           المحفوظات
         </Link>
-      }
+      ) : null}
     >
-        <section className="mb-6 grid gap-4 md:grid-cols-3">
-          <StatCard icon={BriefcaseBusiness} label="نتائج البحث" value={loading ? "..." : jobs.length} hint="وظيفة مطابقة للفلاتر" />
-          <StatCard icon={Filter} label="الفلاتر النشطة" value={Object.values(filters).filter(Boolean).length} hint="يمكن تعديلها فوراً" tone="blue" />
-          <StatCard icon={MapPin} label="نطاق البحث" value={filters.location || "كل المواقع"} hint="حسب المدينة أو نوع الدوام" tone="green" />
+        <section className="mb-6 grid border border-[var(--rushd-border)] bg-[var(--rushd-surface)] md:grid-cols-3">
+          {[
+            [BriefcaseBusiness, "نتائج البحث", loading ? "..." : jobs.length, "وظيفة متاحة"],
+            [Filter, "الفلاتر النشطة", Object.values(filters).filter(Boolean).length, "فلتر مستخدم"],
+            [MapPin, "نطاق البحث", filters.location || "كل المواقع", "الموقع الحالي"],
+          ].map(([Icon, label, value, hint], index) => <div key={label} className={`flex items-center gap-4 p-5 ${index < 2 ? "border-b border-[var(--rushd-border)] md:border-b-0 md:border-l" : ""}`}><span className="flex h-11 w-11 items-center justify-center bg-[var(--rushd-card)] text-[var(--rushd-accent)]"><Icon className="h-5 w-5" /></span><span className="min-w-0"><small className="block font-bold text-[var(--rushd-muted)]">{label}</small><strong className="mt-1 block truncate text-2xl">{value}</strong><small className="text-[var(--rushd-muted)]">{hint}</small></span></div>)}
         </section>
         <SearchHeader
           filters={filters}

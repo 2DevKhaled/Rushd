@@ -1,142 +1,55 @@
-
-import {
-  ArrowLeft,
-  BadgeCheck,
-  BriefcaseBusiness,
-  FileText,
-  Sparkles,
-  Target,
-} from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { ArrowUpLeft, BriefcaseBusiness, Check, FileText, Sparkles, UserRound } from "lucide-react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import LuxuryDashboardLayout from "../../components/dashboard/LuxuryDashboardLayout";
-import { MiniBarChart, StatCard } from "../../components/dashboard/DashboardWidgets";
-import { Card } from "../../components/ui/card";
+
+const paths = [
+  { number: "01", title: "اكتشف الوظائف", description: "ابحث، قارن، واحفظ الفرص المناسبة لمسارك.", icon: BriefcaseBusiness, to: "/find-jobs", action: "استعراض الفرص" },
+  { number: "02", title: "ابنِ سيرتك", description: "أنشئ سيرة احترافية وشاركها مباشرة عند التقديم.", icon: FileText, to: "/resume-builder", action: "فتح منشئ السيرة" },
+  { number: "03", title: "استعد للمقابلة", description: "تدرّب على أسئلة مخصصة حسب الدور الذي تستهدفه.", icon: Sparkles, to: "/interview-prep", action: "بدء التدريب" },
+];
 
 function JobSeekerDashboard() {
-  const navigate = useNavigate();
   const { user } = useAuth();
-
-  const sections = [
-    {
-      title: "الوظائف",
-      eyebrow: "JOBS",
-      description:
-        "استكشف الفرص المتاحة، راجع تفاصيل الوظائف، واحفظ الفرص المناسبة لمسارك.",
-      icon: BriefcaseBusiness,
-      action: "استعراض الوظائف",
-      onClick: () => navigate("/find-jobs"),
-      enabled: true,
-    },
-    {
-      title: "التحضير للمقابلات الوظيفية",
-      eyebrow: "INTERVIEW_PREP",
-      description:
-        "أنشئ جلسات تدريب ذكية، راجع الأسئلة، واستعد للمقابلة بثقة.",
-      icon: Sparkles,
-      action: "ابدأ التحضير",
-      onClick: () => navigate("/interview-prep"),
-      enabled: true,
-    },
-    {
-      title: "السيرة الذاتية",
-      eyebrow: "RESUME",
-      description:
-        "أنشئ سيرتك الذاتية، عدّل أقسامها، وشارك نسخة عامة عند الحاجة.",
-      icon: FileText,
-      action: "بناء السيرة",
-      onClick: () => navigate("/resume-builder"),
-      enabled: true,
-    },
+  const profileSteps = [
+    { label: "الاسم الأساسي", done: Boolean(user?.name) },
+    { label: "الصورة الشخصية", done: Boolean(user?.avatar) },
+    { label: "السيرة المرفقة", done: Boolean(user?.resume) },
   ];
+  const completed = profileSteps.filter((step) => step.done).length;
 
   return (
     <LuxuryDashboardLayout
-      title={`أهلاً ${user?.name ? `، ${user.name}` : "بك"} في لوحة رُشد`}
-      eyebrow="JOB SEEKER"
-      description="مساحة واحدة لمسارك المهني: استكشف الفرص، جهز سيرتك، واستعد للمقابلات بثقة."
+      eyebrow="مسارك المهني"
+      title={`مرحبًا${user?.name ? `، ${user.name}` : " بك"}`}
+      description="اختر خطوتك التالية، وواصل بناء ملفك والوصول إلى الفرصة المناسبة."
+      actions={<Link to="/find-jobs" className="inline-flex min-h-12 items-center gap-2 bg-[var(--rushd-accent)] px-5 font-bold text-[var(--rushd-ink)]"><BriefcaseBusiness className="h-5 w-5" /> استكشف الوظائف</Link>}
     >
-      <section className="mb-6 grid gap-4 md:grid-cols-3">
-        <StatCard icon={BriefcaseBusiness} label="مسارات نشطة" value="3" hint="وظائف، سيرة، مقابلات" />
-        <StatCard icon={Sparkles} label="تحضير ذكي" value="AI" hint="جلسات مقابلات مخصصة" tone="green" />
-        <StatCard icon={Target} label="هدف اليوم" value="جاهزية" hint="خطوات عملية للتقديم" tone="blue" />
-      </section>
-
-      <section className="mb-6 grid gap-6 lg:grid-cols-[1fr_360px]">
-        <Card className="overflow-hidden p-6">
-          <div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
-            <div>
-              <div className="mb-5 inline-flex items-center gap-2 rounded-xl border border-[var(--rushd-border-strong)] bg-[var(--rushd-card)] px-4 py-2 text-sm font-bold text-[var(--rushd-accent)]">
-                <BadgeCheck className="h-4 w-4" />
-                تجربة جاهزة للعرض والمناقشة
-              </div>
-              <h2 className="max-w-3xl text-3xl font-black leading-tight md:text-5xl">
-                منصة مهنية فاخرة تجمع أهم أدوات الباحث عن عمل.
-              </h2>
-              <p className="mt-5 max-w-2xl leading-8 text-[var(--rushd-muted)]">
-                اختر القسم الذي تريد العمل عليه اليوم. كل مسار يحافظ على بياناتك الحالية ويقودك مباشرة إلى الوظيفة أو السيرة أو التدريب.
-              </p>
-            </div>
-          </div>
-        </Card>
-        <MiniBarChart
-          items={[
-            { label: "الوظائف", value: 3 },
-            { label: "التحضير", value: 2 },
-            { label: "السيرة", value: 1 },
-          ]}
-        />
-      </section>
-
-        <section className="grid grid-cols-1 gap-5 md:grid-cols-3">
-          {sections.map((section) => {
-            const Icon = section.icon;
-
+      <section className="grid gap-6 xl:grid-cols-[1fr_320px]">
+        <div className="grid border-t border-r border-[var(--rushd-border)] md:grid-cols-3">
+          {paths.map((path) => {
+            const Icon = path.icon;
             return (
-              <button
-                key={section.title}
-                type="button"
-                disabled={!section.enabled}
-                onClick={section.onClick}
-                className={`group relative min-h-72 overflow-hidden rounded-2xl border p-6 text-right shadow-2xl shadow-black/20 transition ${
-                  section.enabled
-                    ? "border-[var(--rushd-border)] bg-[var(--rushd-surface)] hover:-translate-y-1 hover:border-[var(--rushd-border-strong)] hover:shadow-[0_22px_80px_var(--rushd-glow)]"
-                    : "cursor-not-allowed border-white/8 bg-[var(--rushd-surface)] opacity-70"
-                }`}
-              >
-                <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(var(--rushd-glow)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.14)_1px,transparent_1px)] [background-size:28px_28px]" />
-                <div className="relative flex h-full flex-col">
-                  <div className="mb-8 flex items-start justify-between gap-4">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[linear-gradient(145deg,var(--rushd-accent-2),#9b6b24)] text-[var(--rushd-ink)]">
-                      <Icon className="h-7 w-7" />
-                    </div>
-                    <span className="font-mono text-xs font-bold text-[var(--rushd-accent)]">
-                      {section.eyebrow}
-                    </span>
-                  </div>
-
-                  <h3 className="text-2xl font-black text-[var(--rushd-text)]">
-                    {section.title}
-                  </h3>
-                  <p className="mt-4 flex-1 leading-8 text-[var(--rushd-muted)]">
-                    {section.description}
-                  </p>
-
-                  <div
-                    className={`mt-8 inline-flex items-center gap-2 text-sm font-black ${
-                      section.enabled ? "text-[var(--rushd-accent)]" : "text-[var(--rushd-muted)]"
-                    }`}
-                  >
-                    {section.action}
-                    {section.enabled && (
-                      <ArrowLeft className="h-4 w-4 transition group-hover:-translate-x-1" />
-                    )}
-                  </div>
-                </div>
-              </button>
+              <Link key={path.title} to={path.to} className="group relative min-h-80 border-b border-l border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-6 transition hover:bg-[var(--rushd-card)]">
+                <div className="flex items-center justify-between"><span className="text-sm font-bold text-[var(--rushd-muted)]">{path.number}</span><Icon className="h-6 w-6 text-[var(--rushd-accent)]" /></div>
+                <h2 className="mt-16 text-2xl font-bold">{path.title}</h2>
+                <p className="mt-4 leading-8 text-[var(--rushd-muted)]">{path.description}</p>
+                <div className="absolute inset-x-6 bottom-6 flex items-center justify-between border-t border-[var(--rushd-border)] pt-4 text-sm font-bold text-[var(--rushd-accent)]"><span>{path.action}</span><ArrowUpLeft className="h-5 w-5 transition group-hover:-translate-x-1 group-hover:-translate-y-1" /></div>
+              </Link>
             );
           })}
-        </section>
+        </div>
+
+        <aside className="self-start bg-[var(--rushd-surface)] p-6 shadow-[0_18px_55px_var(--rushd-shadow)]">
+          <div className="flex items-center justify-between"><span className="flex h-11 w-11 items-center justify-center bg-[var(--rushd-card)] text-[var(--rushd-accent)]"><UserRound className="h-5 w-5" /></span><strong className="text-3xl text-[var(--rushd-accent)]">{completed}/3</strong></div>
+          <h2 className="mt-6 text-xl font-bold">اكتمال الملف الأساسي</h2>
+          <p className="mt-2 text-sm leading-7 text-[var(--rushd-muted)]">أكمل بياناتك لتكون جاهزًا عند التقديم.</p>
+          <div className="mt-6 border-t border-[var(--rushd-border)] pt-3">
+            {profileSteps.map((step) => <div key={step.label} className="flex items-center gap-3 py-3"><span className={`flex h-6 w-6 items-center justify-center border ${step.done ? "border-[var(--rushd-accent)] bg-[var(--rushd-accent)] text-[var(--rushd-ink)]" : "border-[var(--rushd-border)] text-[var(--rushd-muted)]"}`}>{step.done && <Check className="h-4 w-4" />}</span><span className={step.done ? "text-[var(--rushd-text)]" : "text-[var(--rushd-muted)]"}>{step.label}</span></div>)}
+          </div>
+          <Link to="/profile" className="mt-5 flex min-h-12 items-center justify-center border border-[var(--rushd-border-strong)] font-bold text-[var(--rushd-accent)] hover:bg-[var(--rushd-card)]">تحديث الملف</Link>
+        </aside>
+      </section>
     </LuxuryDashboardLayout>
   );
 }

@@ -14,12 +14,10 @@ const SummaryCard = ({
     <div
       dir="rtl"
       onClick={onSelect}
-      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-2xl transition duration-300 hover:-translate-y-1 hover:border-[var(--rushd-border-strong)] hover:shadow-[0_22px_80px_var(--rushd-glow)]"
+      className="group relative cursor-pointer overflow-hidden border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-[0_16px_45px_var(--rushd-shadow)] transition duration-300 hover:border-[var(--rushd-border-strong)]"
     >
-      <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(var(--rushd-grid)_1px,transparent_1px),linear-gradient(90deg,var(--rushd-grid-2)_1px,transparent_1px)] [background-size:28px_28px]" />
-
-      <div className="relative mb-5 flex items-start gap-4">
-        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[linear-gradient(145deg,var(--rushd-accent-2),var(--rushd-accent))] text-lg font-black text-[var(--rushd-ink)] shadow-inner">
+      <div className="mb-5 flex items-start gap-4">
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center bg-[var(--rushd-accent)] text-lg font-bold text-[var(--rushd-ink)]">
           {getInitials(role)}
         </div>
         <div className="min-w-0 flex-grow">
@@ -31,16 +29,16 @@ const SummaryCard = ({
       </div>
 
       <button
-        className="absolute left-4 top-4 hidden items-center gap-2 rounded-lg border border-red-300/20 bg-red-400/10 px-3 py-2 text-sm font-bold text-red-200 transition hover:bg-red-400/20 group-hover:flex"
+        className="absolute left-4 top-4 flex h-9 w-9 items-center justify-center border border-[var(--rushd-danger-border)] text-[var(--rushd-danger-text)] transition hover:bg-[var(--rushd-danger-bg)]"
         onClick={(e) => {
           e.stopPropagation();
           onDelete();
         }}
       >
-        <Trash2 className="h-4 w-4" />
+        <Trash2 className="h-4 w-4" /><span className="sr-only">حذف الجلسة</span>
       </button>
 
-      <div className="relative flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2">
         <span className="border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-3 py-1.5 text-xs font-bold text-[var(--rushd-text)]">
           الخبرة: {experience} {experience === 1 ? "سنة" : "سنوات"}
         </span>
@@ -49,7 +47,7 @@ const SummaryCard = ({
         </span>
       </div>
 
-      <p className="relative mt-4 line-clamp-2 text-sm leading-7 text-[var(--rushd-muted)]">
+      <p className="mt-4 line-clamp-2 text-sm leading-7 text-[var(--rushd-muted)]">
         {description || "جلسة تدريب مقابلة مخصصة ضمن رُشد."}
       </p>
     </div>

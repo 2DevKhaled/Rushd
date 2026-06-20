@@ -13,7 +13,7 @@ function Input({ value, onChange, label, placeholder, type }) {
       <label className="mb-2 block text-sm font-bold text-[var(--rushd-text)]">
         {label}
       </label>
-      <div className="flex items-center rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 transition-all duration-200 focus-within:border-[var(--rushd-border-strong)]">
+      <div className="flex items-center border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 transition-all duration-200 focus-within:border-[var(--rushd-accent)]">
         <input
           type={
             type === "password" ? (showPassword ? "text" : "password") : type

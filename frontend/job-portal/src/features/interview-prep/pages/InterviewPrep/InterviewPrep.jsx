@@ -128,7 +128,7 @@ function InterviewPrep() {
         <button
           type="button"
           onClick={() => navigate("/interview-prep", { replace: true })}
-          className="inline-flex items-center gap-2 rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-2 text-sm font-bold text-[var(--rushd-text)] transition hover:border-[var(--rushd-border-strong)]"
+          className="inline-flex items-center gap-2 border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-2 text-sm font-bold text-[var(--rushd-text)] transition hover:border-[var(--rushd-border-strong)]"
         >
           <ArrowRight className="h-4 w-4" />
           الرجوع إلى جلسات المقابلات
@@ -140,7 +140,7 @@ function InterviewPrep() {
           dir="rtl"
           className="container mx-auto flex min-h-[60vh] items-center justify-center px-4 md:px-0"
         >
-          <div className="max-w-xl rounded-3xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-8 text-center shadow-2xl">
+          <div className="max-w-xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-8 text-center shadow-2xl">
             <h1 className="text-2xl font-black text-[var(--rushd-text)]">
               لم نتمكن من فتح الجلسة
             </h1>
@@ -148,7 +148,7 @@ function InterviewPrep() {
             <button
               type="button"
               onClick={() => navigate("/interview-prep", { replace: true })}
-              className="mt-6 rounded-xl bg-[linear-gradient(145deg,var(--rushd-accent-2),var(--rushd-accent))] px-5 py-3 text-sm font-black text-[var(--rushd-ink)] transition"
+              className="mt-6 bg-[var(--rushd-accent)] px-5 py-3 text-sm font-bold text-[var(--rushd-ink)] transition hover:bg-[var(--rushd-accent-2)]"
             >
               العودة إلى جلساتي
             </button>
@@ -172,21 +172,19 @@ function InterviewPrep() {
       <main dir="rtl" className="container mx-auto min-h-screen px-4 pb-16 pt-6 md:px-0">
         <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <p className="font-mono text-sm font-bold text-[var(--rushd-accent)]">Q_AND_A</p>
+            <p className="text-sm font-bold text-[var(--rushd-accent)]">بنك الأسئلة</p>
             <h2 className="mt-2 text-2xl font-black text-[var(--rushd-text)]">
               أسئلة وأجوبة المقابلة
             </h2>
           </div>
-          <div className="rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-sm font-bold text-[var(--rushd-muted)]">
+          <div className="border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-sm font-bold text-[var(--rushd-muted)]">
             اضغط على السؤال لعرض الإجابة
           </div>
         </div>
 
         <div className="grid grid-cols-12 gap-5">
           <div
-            className={`col-span-12 ${
-              openLearnMoreDrawer ? "md:col-span-7" : "md:col-span-8"
-            }`}
+            className="col-span-12 xl:col-span-9"
           >
             {sessionData?.questions?.map((data, index) => (
                 <div key={data._id || index}>
@@ -203,7 +201,7 @@ function InterviewPrep() {
                         <button
                           disabled={isLoading || isUpdateLoader}
                           onClick={uploadMoreQuestions}
-                          className="flex items-center gap-3 rounded-xl bg-[linear-gradient(145deg,var(--rushd-accent-2),var(--rushd-accent))] px-5 py-3 text-sm font-black text-[var(--rushd-ink)] shadow-[0_22px_80px_var(--rushd-glow)] transition hover:-translate-y-1 disabled:cursor-not-allowed disabled:opacity-50"
+                          className="flex items-center gap-3 bg-[var(--rushd-accent)] px-5 py-3 text-sm font-bold text-[var(--rushd-ink)] transition hover:bg-[var(--rushd-accent-2)] disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           {isUpdateLoader ? (
                             <LoaderCircle className="h-5 w-5 animate-spin" />
@@ -225,7 +223,7 @@ function InterviewPrep() {
           title={!isLoading && explanation?.title}
         >
           {errorMsg && (
-            <p className="flex gap-2 rounded-xl border border-red-300/20 bg-red-400/10 p-4 text-sm font-bold text-red-200">
+            <p className="flex gap-2 border border-[var(--rushd-danger-border)] bg-[var(--rushd-danger-bg)] p-4 text-sm font-bold text-[var(--rushd-danger-text)]">
               <CircleAlert className="mt-1 h-5 w-5" />
               {errorMsg}
             </p>

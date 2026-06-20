@@ -4,7 +4,7 @@ const Drawer = ({ isOpen, onClose, title, children }) => {
   return (
     <div
       dir="rtl"
-      className={`fixed left-0 top-[64px] z-40 h-[calc(100dvh-64px)] w-full overflow-y-auto border-r border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-2xl backdrop-blur-2xl transition-transform md:w-[42vw] ${
+      className={`fixed left-0 top-[76px] z-40 h-[calc(100dvh-76px)] w-full overflow-y-auto border-r border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-2xl transition-transform md:w-[42vw] ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}
       tabIndex="-1"
@@ -21,7 +21,7 @@ const Drawer = ({ isOpen, onClose, title, children }) => {
         <button
           type="button"
           onClick={onClose}
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--rushd-border)] text-[var(--rushd-muted)] transition hover:bg-[var(--rushd-card)] hover:text-[var(--rushd-text)]"
+          className="flex h-9 w-9 items-center justify-center border border-[var(--rushd-border)] text-[var(--rushd-muted)] transition hover:bg-[var(--rushd-card)] hover:text-[var(--rushd-text)]"
         >
           <X className="h-5 w-5" />
         </button>

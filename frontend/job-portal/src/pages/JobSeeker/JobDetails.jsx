@@ -116,7 +116,7 @@ function JobDetails() {
 
   if (loading) {
     return (
-      <LuxuryDashboardLayout role={user ? undefined : "public"} title="تفاصيل الوظيفة" eyebrow="LOADING">
+      <LuxuryDashboardLayout role={user ? undefined : "public"} title="تفاصيل الوظيفة" eyebrow="جاري التحميل">
         <LoadingPanel rows={5} />
       </LuxuryDashboardLayout>
     );
@@ -127,19 +127,19 @@ function JobDetails() {
   return (
     <LuxuryDashboardLayout
       role={user ? undefined : "public"}
-      eyebrow="JOB DETAILS"
+      eyebrow="تفاصيل الفرصة"
       title={job.title}
       description={`${companyName} • ${job.location || "غير محدد"} • ${job.type || "نوع غير محدد"}`}
-      actions={<button type="button" onClick={() => navigate("/find-jobs")} className="rounded-xl border border-[var(--rushd-border)] px-4 py-3 text-sm font-black text-[var(--rushd-muted)]">العودة للوظائف</button>}
+      actions={<button type="button" onClick={() => navigate("/find-jobs")} className="min-h-12 border border-[var(--rushd-border)] px-4 text-sm font-bold text-[var(--rushd-muted)]">العودة للوظائف</button>}
       maxWidth="max-w-6xl"
     >
-        <section className="rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-6 shadow-2xl shadow-black/30">
+        <section className="border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-6 shadow-[0_18px_55px_var(--rushd-shadow)]">
           <div className="flex flex-col justify-between gap-5 md:flex-row md:items-start">
             <div className="flex gap-4">
               <img
                 src={job.company?.companyLogo || "/favicon.svg"}
                 alt={companyName}
-                className="h-16 w-16 rounded-xl border border-[var(--rushd-border)] object-cover"
+                className="h-16 w-16 border border-[var(--rushd-border)] object-cover"
               />
               <div>
                 <p className="font-bold text-[var(--rushd-muted)]">{companyName}</p>
@@ -152,7 +152,7 @@ function JobDetails() {
                 type="button"
                 onClick={toggleSave}
                 disabled={saving}
-                className="rounded-xl border border-[var(--rushd-border-strong)] px-5 py-3 font-black text-[var(--rushd-accent)] transition hover:bg-[var(--rushd-card)]"
+                className="border border-[var(--rushd-border-strong)] px-5 py-3 font-bold text-[var(--rushd-accent)] transition hover:bg-[var(--rushd-card)]"
               >
                 {job.isSaved ? <BookmarkCheck className="ml-2 inline h-5 w-5" /> : <Bookmark className="ml-2 inline h-5 w-5" />}
                 {job.isSaved ? "محفوظة" : "حفظ"}
@@ -161,7 +161,7 @@ function JobDetails() {
                 type="button"
                 onClick={applyToJob}
                 disabled={applying || Boolean(job.applicationStatus) || resumes.length === 0}
-                className="rounded-xl bg-[linear-gradient(145deg,var(--rushd-accent-2),var(--rushd-accent))] px-6 py-3 font-black text-[var(--rushd-ink)] transition hover:-translate-y-0.5 disabled:opacity-55"
+                className="bg-[var(--rushd-accent)] px-6 py-3 font-bold text-[var(--rushd-ink)] transition hover:bg-[var(--rushd-accent-2)] disabled:opacity-55"
               >
                 {applying ? <Loader2 className="ml-2 inline h-5 w-5 animate-spin" /> : <Send className="ml-2 inline h-5 w-5" />}
                 {job.applicationStatus ? `تم التقديم: ${job.applicationStatus}` : "تقديم الآن"}
@@ -177,7 +177,7 @@ function JobDetails() {
         </section>
 
         <section className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px]">
-          <Card className="p-6 leading-8 text-[var(--rushd-text)]">
+          <Card className="rounded-none p-6 leading-8 text-[var(--rushd-text)]">
             <h2 className="mb-4 text-2xl font-black text-[var(--rushd-text)]">وصف الوظيفة</h2>
             <p className="whitespace-pre-line">{job.description}</p>
 
@@ -185,7 +185,7 @@ function JobDetails() {
             <p className="whitespace-pre-line">{job.requirements}</p>
           </Card>
 
-          <aside className="self-start rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-6">
+          <aside className="self-start border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-6 shadow-[0_16px_45px_var(--rushd-shadow)] lg:sticky lg:top-28">
             <h2 className="text-xl font-black">عن الشركة</h2>
             <p className="mt-3 font-bold text-[var(--rushd-accent)]">{companyName}</p>
             <p className="mt-3 leading-7 text-[var(--rushd-muted)]">
@@ -193,7 +193,7 @@ function JobDetails() {
             </p>
 
             {user?.role === "jobseeker" && !job.applicationStatus && (
-              <div className="mt-6 rounded-xl border border-[var(--rushd-border-strong)] bg-[var(--rushd-card)] p-4">
+              <div className="mt-6 border border-[var(--rushd-border-strong)] bg-[var(--rushd-card)] p-4">
                 <h3 className="flex items-center gap-2 font-black text-[var(--rushd-accent)]">
                   <FileText className="h-5 w-5" />
                   السيرة المستخدمة للتقديم
@@ -206,7 +206,7 @@ function JobDetails() {
                     <button
                       type="button"
                       onClick={() => navigate("/resume-builder")}
-                      className="mt-4 rounded-xl bg-[var(--rushd-accent-2)] px-4 py-3 text-sm font-black text-[var(--rushd-ink)]"
+                      className="mt-4 bg-[var(--rushd-accent)] px-4 py-3 text-sm font-bold text-[var(--rushd-ink)]"
                     >
                       إنشاء سيرة الآن
                     </button>
@@ -215,7 +215,7 @@ function JobDetails() {
                   <Select
                     value={selectedResumeId}
                     onChange={(event) => setSelectedResumeId(event.target.value)}
-                    className="mt-3"
+                    className="mt-3 rounded-none"
                   >
                     {resumes.map((resume) => (
                       <option key={resume._id} value={resume._id}>
@@ -237,7 +237,7 @@ function JobDetails() {
 
 function Info({ icon: Icon, label, value }) {
   return (
-    <div className="rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-card)] p-4">
+    <div className="border border-[var(--rushd-border)] bg-[var(--rushd-card)] p-4">
       <Icon className="mb-3 h-5 w-5 text-[var(--rushd-accent)]" />
       <p className="text-xs font-bold text-[var(--rushd-muted)]">{label}</p>
       <p className="mt-1 font-black">{value}</p>

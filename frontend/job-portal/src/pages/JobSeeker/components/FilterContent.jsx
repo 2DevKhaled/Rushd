@@ -5,7 +5,7 @@ function FilterContent({ filters, onChange, onReset }) {
   return (
     <aside
       dir="rtl"
-      className="self-start rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-2xl shadow-black/20"
+      className="self-start border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-[0_16px_45px_var(--rushd-shadow)] lg:sticky lg:top-28"
     >
       <div className="mb-5 flex items-center justify-between">
         <h2 className="text-xl font-black text-[var(--rushd-text)]">الفلاتر</h2>
@@ -24,7 +24,7 @@ function FilterContent({ filters, onChange, onReset }) {
           <select
             value={filters.type}
             onChange={(event) => onChange("type", event.target.value)}
-            className="w-full rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-bg)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)] focus:ring-4 focus:ring-[var(--rushd-glow)]"
+            className="w-full border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)]"
           >
             <option value="">كل الأنواع</option>
             {jobTypes.map((type) => (
@@ -40,7 +40,7 @@ function FilterContent({ filters, onChange, onReset }) {
           <select
             value={filters.category}
             onChange={(event) => onChange("category", event.target.value)}
-            className="w-full rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-bg)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)] focus:ring-4 focus:ring-[var(--rushd-glow)]"
+            className="w-full border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)]"
           >
             <option value="">كل التخصصات</option>
             {categories.map((category) => (
@@ -59,7 +59,7 @@ function FilterContent({ filters, onChange, onReset }) {
               min="0"
               value={filters.minSalary}
               onChange={(event) => onChange("minSalary", event.target.value)}
-              className="w-full rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-bg)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)] focus:ring-4 focus:ring-[var(--rushd-glow)]"
+              className="w-full border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)]"
               placeholder="0"
             />
           </label>
@@ -70,7 +70,7 @@ function FilterContent({ filters, onChange, onReset }) {
               min="0"
               value={filters.maxSalary}
               onChange={(event) => onChange("maxSalary", event.target.value)}
-              className="w-full rounded-xl border border-[var(--rushd-border)] bg-[var(--rushd-bg)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)] focus:ring-4 focus:ring-[var(--rushd-glow)]"
+              className="w-full border border-[var(--rushd-border)] bg-[var(--rushd-card)] px-4 py-3 text-[var(--rushd-text)] outline-none transition focus:border-[var(--rushd-accent)]"
               placeholder="20000"
             />
           </label>

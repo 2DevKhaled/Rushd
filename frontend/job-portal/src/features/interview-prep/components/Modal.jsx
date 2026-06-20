@@ -7,7 +7,7 @@ function Modal({ children, isOpen, onClose, title, hideHeader }) {
     <div className="fixed inset-0 z-50 flex h-full w-full items-center justify-center bg-[var(--rushd-bg)]/60 px-4 backdrop-blur-sm">
       <div
         dir="rtl"
-        className="relative flex max-h-[90vh] max-w-[94vw] flex-col overflow-hidden rounded-3xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] shadow-2xl"
+        className="relative flex max-h-[90vh] max-w-[94vw] flex-col overflow-hidden border border-[var(--rushd-border)] bg-[var(--rushd-surface)] shadow-2xl"
       >
         {!hideHeader && (
           <div className="border-b border-[var(--rushd-border)] px-6 py-4 pl-14">
@@ -17,7 +17,7 @@ function Modal({ children, isOpen, onClose, title, hideHeader }) {
 
         <button
           type="button"
-          className="absolute left-3.5 top-3.5 flex h-9 w-9 cursor-pointer items-center justify-center rounded-xl border border-[var(--rushd-border)] text-[var(--rushd-muted)] transition hover:bg-[var(--rushd-card)] hover:text-[var(--rushd-text)]"
+          className="absolute left-3.5 top-3.5 flex h-9 w-9 cursor-pointer items-center justify-center border border-[var(--rushd-border)] text-[var(--rushd-muted)] transition hover:bg-[var(--rushd-card)] hover:text-[var(--rushd-text)]"
           onClick={onClose}
           aria-label="إغلاق النافذة"
         >

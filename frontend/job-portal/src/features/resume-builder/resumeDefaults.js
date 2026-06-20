@@ -27,4 +27,4 @@ export const resumeTemplates = [
   { id: "minimal", label: "بسيط" },
 ];
 
-export const accentColors = ["#1c1710", "#9b6b24", "#d6a84f", "#f6d38b", "#4b3a1c", "#7c5a1f"];
+export const accentColors = ["#032722", "#076d57", "#00b879", "#35b995", "#69d4b3", "#707d7a"];

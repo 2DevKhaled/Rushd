@@ -16,9 +16,9 @@ function ProfileInfoCard() {
     user && (
       <div dir="rtl" className="flex items-center gap-3">
         <img
-          src={user.avatar || user.profileImageUrl}
+          src={user.avatar || user.profileImageUrl || "/favicon.svg"}
           alt={user.name || "صورة المستخدم"}
-          className="h-10 w-10 rounded-xl border border-[var(--rushd-border)] object-cover"
+          className="h-10 w-10 border border-[var(--rushd-border)] object-cover"
         />
         <div className="text-right leading-none">
           <div className="text-sm font-black text-[var(--rushd-text)]">{user.name || ""}</div>
