@@ -15,12 +15,13 @@ const interviewQuestionRoutes = require("./routes/interviewQuestionRoutes");
 const interviewSessionRoutes = require("./routes/interviewSessionRoutes");
 const resumeAiRoutes = require("./routes/resumeAiRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 const app = express();
 // Middleware to handle CORS
 app.use(
   cors({
     origin: "*",
-    method: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
@@ -40,6 +41,7 @@ app.use("/api/questions", interviewQuestionRoutes);
 app.use("/api/sessions", interviewSessionRoutes);
 app.use("/api/resumes", resumeRoutes);
 app.use("/api/resume-ai", resumeAiRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Server upload folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {}));

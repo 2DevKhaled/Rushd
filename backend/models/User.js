@@ -15,11 +15,24 @@ const userSchema = new mongoose.Schema(
     role: {
       type: String,
       enum: {
-        values: ["jobseeker", "employer"],
+        values: ["jobseeker", "employer", "admin"],
         message: "نوع الحساب غير صحيح",
       },
       required: [true, "نوع الحساب مطلوب"],
     },
+    accountStatus: {
+      type: String,
+      enum: {
+        values: ["pending", "active", "suspended"],
+        message: "حالة الحساب غير صحيحة",
+      },
+      default: "active",
+      index: true,
+    },
+    approvedAt: Date,
+    approvedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    suspendedAt: Date,
+    suspendedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     avatar: String,
     resume: String,
     // For Empyloyer

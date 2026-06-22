@@ -127,8 +127,7 @@ function SignUp() {
         role: formData.role,
         avatar,
       });
-      const fallbackPath =
-        user.role === "employer" ? "/employer-dashboard" : "/dashboard";
+      const fallbackPath = user.requiresApproval ? "/login" : "/dashboard";
       setFormState((prev) => ({
         ...prev,
         loading: false,
@@ -155,8 +154,14 @@ function SignUp() {
       <div dir="rtl" className="auth-page flex min-h-screen items-center justify-center bg-[var(--auth-bg)] px-4 text-[var(--auth-text)]">
         <div className="w-full max-w-md border border-[var(--auth-border)] bg-[var(--auth-surface)] p-9 text-center shadow-[0_30px_90px_var(--auth-shadow)]">
           <span className="mx-auto flex h-16 w-16 items-center justify-center bg-[var(--auth-accent)] text-[var(--auth-ink)]"><CheckCircle className="h-8 w-8" /></span>
-          <h1 className="mt-6 text-3xl font-bold">أهلًا بك في رُشد</h1>
-          <p className="mt-3 text-[var(--auth-muted)]">تم إنشاء حسابك بنجاح.</p>
+          <h1 className="mt-6 text-3xl font-bold">
+            {formData.role === "employer" ? "طلبك قيد المراجعة" : "أهلًا بك في رُشد"}
+          </h1>
+          <p className="mt-3 text-[var(--auth-muted)]">
+            {formData.role === "employer"
+              ? "تم إنشاء الحساب، ويمكنك تسجيل الدخول بعد موافقة الإدارة."
+              : "تم إنشاء حسابك بنجاح."}
+          </p>
           <Loader className="mx-auto mt-7 h-6 w-6 animate-spin text-[var(--auth-accent)]" />
         </div>
       </div>

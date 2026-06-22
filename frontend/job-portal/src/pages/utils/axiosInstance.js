@@ -26,7 +26,12 @@ axiosInstance.interceptors.request.use(
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    const authCode = error.response?.data?.code;
+    if (
+      error.response?.status === 401 ||
+      authCode === "ACCOUNT_PENDING" ||
+      authCode === "ACCOUNT_SUSPENDED"
+    ) {
       localStorage.removeItem("token");
     }
 

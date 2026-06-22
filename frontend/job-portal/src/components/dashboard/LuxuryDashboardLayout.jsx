@@ -13,6 +13,7 @@ import {
   Menu,
   Moon,
   Search,
+  ShieldCheck,
   Sparkles,
   Sun,
   UserRound,
@@ -43,6 +44,10 @@ const employerNav = [
   { label: "ملف الشركة", to: "/company-profile", icon: Building2 },
 ];
 
+const adminNav = [
+  { label: "مراجعة أصحاب العمل", to: "/admin", icon: ShieldCheck },
+];
+
 const publicNav = [
   { label: "الرئيسية", to: "/", icon: Home },
   { label: "الوظائف", to: "/find-jobs", icon: BriefcaseBusiness },
@@ -60,6 +65,7 @@ const routeTitles = {
   "/manage-jobs": "إدارة الوظائف",
   "/applicants": "طلبات التقديم",
   "/company-profile": "ملف الشركة",
+  "/admin": "إدارة أصحاب العمل",
 };
 
 function LuxuryDashboardLayout({
@@ -81,12 +87,12 @@ function LuxuryDashboardLayout({
   const [notifications, setNotifications] = useState([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [notificationsLoading, setNotificationsLoading] = useState(false);
-  const navItems = role === "employer" ? employerNav : role === "public" ? publicNav : seekerNav;
+  const navItems = role === "admin" ? adminNav : role === "employer" ? employerNav : role === "public" ? publicNav : seekerNav;
   const currentTitle = title || routeTitles[location.pathname] || "رُشد";
   const displayName = user?.companyName || user?.name || "زائر";
 
   const breadcrumbs = useMemo(() => {
-    const home = role === "employer" ? "لوحة صاحب العمل" : "لوحة الباحث";
+    const home = role === "admin" ? "لوحة الإدارة" : role === "employer" ? "لوحة صاحب العمل" : "لوحة الباحث";
     return [home, currentTitle].filter((item, index, list) => index === 0 || item !== list[index - 1]);
   }, [currentTitle, role]);
 
@@ -160,7 +166,7 @@ function LuxuryDashboardLayout({
   }, [fetchNotifications, user]);
 
   return (
-    <div dir="rtl" className={cn("min-h-screen w-full max-w-[100vw] overflow-x-clip bg-[var(--rushd-bg)] text-[var(--rushd-text)]", role === "employer" ? "employer-shell" : "seeker-shell")}>
+    <div dir="rtl" className={cn("min-h-screen w-full max-w-[100vw] overflow-x-clip bg-[var(--rushd-bg)] text-[var(--rushd-text)]", role === "employer" || role === "admin" ? "employer-shell" : "seeker-shell")}>
       <aside
         className={cn(
           "fixed inset-y-0 right-0 z-40 hidden w-72 flex-col border-l border-[var(--rushd-border)] bg-[var(--rushd-surface)] shadow-2xl backdrop-blur-2xl lg:flex",
@@ -168,7 +174,7 @@ function LuxuryDashboardLayout({
         )}
       >
         <div className="flex h-20 items-center justify-between border-b border-[var(--rushd-border)] px-5">
-          <Link to={role === "employer" ? "/employer-dashboard" : "/dashboard"} className="flex items-center gap-3">
+          <Link to={role === "admin" ? "/admin" : role === "employer" ? "/employer-dashboard" : "/dashboard"} className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-[var(--rushd-border-strong)] bg-[var(--rushd-accent)] text-2xl font-black text-[var(--rushd-ink)]">
               ر
             </div>
@@ -212,7 +218,7 @@ function LuxuryDashboardLayout({
               <img src={user?.avatar || user?.companyLogo || "/favicon.svg"} alt={displayName} className="h-11 w-11 rounded-xl border border-[var(--rushd-border)] object-cover" />
               <div className="min-w-0">
                 <p className="truncate font-black text-[var(--rushd-text)]">{displayName}</p>
-                <p className="text-xs font-bold text-[var(--rushd-muted)]">{role === "employer" ? "صاحب عمل" : user ? "باحث عن عمل" : "تصفح عام"}</p>
+                <p className="text-xs font-bold text-[var(--rushd-muted)]">{role === "admin" ? "مدير النظام" : role === "employer" ? "صاحب عمل" : user ? "باحث عن عمل" : "تصفح عام"}</p>
               </div>
             </div>
             {user && (
@@ -353,7 +359,7 @@ function LuxuryDashboardLayout({
         </header>
 
         <main className={cn("mx-auto w-full min-w-0 max-w-full px-4 py-6 sm:px-6 lg:px-8", maxWidth)}>
-          <section className={cn("mb-6 rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-2xl backdrop-blur-xl sm:p-6", role === "employer" ? "employer-page-header" : "seeker-page-header")}>
+          <section className={cn("mb-6 rounded-2xl border border-[var(--rushd-border)] bg-[var(--rushd-surface)] p-5 shadow-2xl backdrop-blur-xl sm:p-6", role === "employer" || role === "admin" ? "employer-page-header" : "seeker-page-header")}>
             <div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <div className="mb-3 flex flex-wrap items-center gap-2 text-xs font-black text-[var(--rushd-muted)]">

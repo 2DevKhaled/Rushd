@@ -29,7 +29,9 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (payload) => {
     const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, payload);
-    updateUser(response.data);
+    if (response.data?.token) {
+      updateUser(response.data);
+    }
     return response.data;
   };
 

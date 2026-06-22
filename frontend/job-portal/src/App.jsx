@@ -27,6 +27,7 @@ import InterviewPrep from "./features/interview-prep/pages/InterviewPrep/Intervi
 import ResumeBuilder from "./features/resume-builder/ResumeBuilder";
 import ResumeDashboard from "./features/resume-builder/ResumeDashboard";
 import ResumePublicPreview from "./features/resume-builder/ResumePublicPreview";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 function App() {
   return (
     <ThemeProvider>
@@ -80,6 +81,9 @@ function App() {
                 path="/company-profile/edit"
                 element={<EditProfileDetails />}
               />
+            </Route>
+            <Route element={<ProtectedRoute requiredRole="admin" />}>
+              <Route path="/admin" element={<AdminDashboard />} />
             </Route>
             {/* Catch all route */}
             <Route path="/*" element={<Navigate to="/" replace />} />

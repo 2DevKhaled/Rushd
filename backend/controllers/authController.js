@@ -15,6 +15,7 @@ const buildUserResponse = (user) => ({
   email: user.email,
   avatar: user.avatar,
   role: user.role,
+  accountStatus: user.accountStatus || "active",
   token: generateToken(user._id),
   companyName: user.companyName || "",
   companyDescription: user.companyDescription || "",
@@ -37,42 +38,42 @@ exports.register = async (req, res) => {
     const name = String(req.body.name || "").trim();
     const email = String(req.body.email || "").trim().toLowerCase();
     const { password, avatar, role } = req.body;
-
     if (!name) {
-      return res.status(400).json({ message: "الاسم الكامل مطلوب" });
-    }
-
+      return res.status(400).json({ message: "الاسم الكامل مطلوب" });}
     if (!email) {
-      return res.status(400).json({ message: "البريد الإلكتروني مطلوب" });
-    }
-
+      return res.status(400).json({ message: "البريد الإلكتروني مطلوب" });}
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: "أدخل بريدًا إلكترونيًا صحيحًا" });
-    }
-
+      return res.status(400).json({ message: "أدخل بريدًا إلكترونيًا صحيحًا" });}
     const passwordError = validatePassword(password);
     if (passwordError) {
       return res.status(400).json({ message: passwordError });
     }
-
     if (!allowedRoles.includes(role)) {
       return res.status(400).json({ message: "اختر نوع الحساب" });
     }
-
     const userExists = await User.findOne({ email });
     if (userExists)
       return res.status(400).json({ message: "هذا البريد الإلكتروني مستخدم بالفعل" });
+    const accountStatus = role === "employer" ? "pending" : "active";
+    const user = await User.create({ name, email, password, role, avatar, accountStatus });
 
-    const user = await User.create({ name, email, password, role, avatar });
+    if (role === "employer") {
+      return res.status(201).json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        accountStatus: user.accountStatus,
+        requiresApproval: true,
+        message: "تم إنشاء الحساب وهو الآن بانتظار موافقة الإدارة",
+      });
+    }
+
     res.status(201).json(buildUserResponse(user));
   } catch (error) {
     if (error.code === 11000) {
-      return res.status(400).json({ message: "هذا البريد الإلكتروني مستخدم بالفعل" });
-    }
-
-    res.status(500).json({ message: "تعذر إنشاء الحساب. حاول مرة أخرى." });
-  }
-};
+      return res.status(400).json({ message: "هذا البريد الإلكتروني مستخدم بالفعل" });}
+    res.status(500).json({ message: "تعذر إنشاء الحساب. حاول مرة أخرى." });}};
 
 // @desc Loign user
 exports.login = async (req, res) => {
@@ -95,6 +96,20 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: "البريد الإلكتروني أو كلمة المرور غير صحيحة" });
+    }
+
+    if (user.role === "employer" && user.accountStatus === "pending") {
+      return res.status(403).json({
+        code: "ACCOUNT_PENDING",
+        message: "حساب صاحب العمل بانتظار موافقة الإدارة",
+      });
+    }
+
+    if (user.accountStatus === "suspended") {
+      return res.status(403).json({
+        code: "ACCOUNT_SUSPENDED",
+        message: "تم إيقاف الحساب من الإدارة. تواصل مع الدعم للمراجعة",
+      });
     }
     res.json(buildUserResponse(user));
   } catch (error) {

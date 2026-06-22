@@ -10,6 +10,10 @@ export const API_PATHS = {
     UPDATE_PROFILE: "/api/user/profile",
     DELETE_RESUME: "/api/user/resume",
   },
+  ADMIN: {
+    GET_EMPLOYERS: "/api/admin/employers",
+    UPDATE_EMPLOYER_STATUS: (id) => `/api/admin/employers/${id}/status`,
+  },
   DASHBOARD: {
     OVERVIEW: "/api/analytics/overview",
   },

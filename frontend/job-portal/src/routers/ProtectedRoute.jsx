@@ -20,6 +20,10 @@ function ProtectedRoute({ requiredRole }) {
     return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
+  if (user.role === "admin" && requiredRole !== "admin") {
+    return <Navigate to="/admin" replace />;
+  }
+
   if (requiredRole && user.role !== requiredRole) {
     return <Navigate to="/" replace />;
   }

@@ -69,7 +69,12 @@ function Login() {
         email: formData.email.trim().toLowerCase(),
         password: formData.password,
       });
-      const path = user.role === "employer" ? "/employer-dashboard" : "/dashboard";
+      const path =
+        user.role === "admin"
+          ? "/admin"
+          : user.role === "employer"
+            ? "/employer-dashboard"
+            : "/dashboard";
       setFormState((current) => ({ ...current, loading: false, success: true }));
       setTimeout(() => navigate(path, { replace: true }), 700);
     } catch (error) {
